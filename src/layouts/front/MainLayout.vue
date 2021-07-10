@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          ProgramZheng's Projects
+          programzheng's projects
         </q-toolbar-title>
 
         <div class="q-pr-auto">
