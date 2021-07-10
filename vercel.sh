@@ -1,2 +1,2 @@
 quasar build
-vercel --prod
+vercel ./dist/spa
