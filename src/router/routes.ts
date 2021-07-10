@@ -1,19 +1,22 @@
 import { RouteRecordRaw } from 'vue-router';
 
-import FrontMainLayout from 'layouts/front/MainLayout.vue';
+import Error404 from 'pages/Error404.vue'
+import FrontMainLayout from 'layouts/front/MainLayout.vue'
+import Index from 'pages/Index.vue'
+import JavascriptTimestamp from 'pages/javascript/Timestamp.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => FrontMainLayout,
+    component: FrontMainLayout,
     children: [
       {
         path: '',
-        component: () => import('pages/Index.vue')
+        component: Index
       },
       {
         path: 'javascript/timestamp',
-        component: () => import('pages/javascript/Timestamp.vue')
+        component: JavascriptTimestamp
       }
     ],
   },
@@ -22,7 +25,7 @@ const routes: RouteRecordRaw[] = [
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/Error404.vue'),
+    component: Error404,
   },
 ];
 

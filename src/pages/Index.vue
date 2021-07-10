@@ -1,5 +1,6 @@
 <template>
   <q-page class="row items-center justify-evenly">
+    Index
   </q-page>
 </template>
 
@@ -7,6 +8,6 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'PageIndex',
+  name: 'Index'
 });
 </script>
