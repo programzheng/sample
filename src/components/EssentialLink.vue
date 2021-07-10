@@ -1,24 +1,20 @@
 <template>
-  <q-item
+  <q-expansion-item
     clickable
-    tag="a"
-    target="_blank"
-    :href="link"
+    expansion-separator
+    :icon="icon"
+    :label="title"
   >
-    <q-item-section
-      v-if="icon"
-      avatar
+    <q-expansion-item
+      v-for="children in childrens"
+      :key="children.title"
+      :header-inset-level="1"
+      :icon="children.icon"
+      :label="children.title"
+      :to="children.link"
     >
-      <q-icon :name="icon" />
-    </q-item-section>
-
-    <q-item-section>
-      <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>
-        {{ caption }}
-      </q-item-label>
-    </q-item-section>
-  </q-item>
+    </q-expansion-item>
+  </q-expansion-item>
 </template>
 
 <script lang="ts">
@@ -45,6 +41,36 @@ export default defineComponent({
     icon: {
       type: String,
       default: ''
+    },
+
+    childrens: {
+      type: Array,
+      default: () => [
+        {
+          type: Object,
+          default: () => ({
+            title: {
+              type: String,
+              required: true
+            },
+
+            caption: {
+              type: String,
+              default: ''
+            },
+
+            link: {
+              type: String,
+              default: '#'
+            },
+
+            icon: {
+              type: String,
+              default: ''
+            }
+          })
+        },
+      ]
     }
   }
 })

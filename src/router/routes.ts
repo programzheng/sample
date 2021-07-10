@@ -1,10 +1,21 @@
 import { RouteRecordRaw } from 'vue-router';
 
+import FrontMainLayout from 'layouts/front/MainLayout.vue';
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Index.vue') }],
+    component: () => FrontMainLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('pages/Index.vue')
+      },
+      {
+        path: 'javascript/timestamp',
+        component: () => import('pages/javascript/Timestamp.vue')
+      }
+    ],
   },
 
   // Always leave this as last one,
