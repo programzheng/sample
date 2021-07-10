@@ -1,2 +1,2 @@
 quasar build
-vercel --prod
+cp vercel.json ./dist/spa/vercel.json
