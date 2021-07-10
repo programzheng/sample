@@ -146,7 +146,7 @@ module.exports = configure(function (ctx) {
       manifest: {
         name: 'programzheng\'s projects',
         short_name: 'programzheng\'s projects',
-        description: 'A Quasar Framework app',
+        description: 'programzheng\'s projects',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
