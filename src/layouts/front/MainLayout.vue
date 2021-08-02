@@ -79,7 +79,7 @@ const linksList = [
 ];
 
 import { useQuasar } from 'quasar'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, inject, ref } from 'vue'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -88,6 +88,7 @@ export default defineComponent({
     EssentialLink
   },
   setup () {
+    const api = inject('api');
     const $q = useQuasar()
     const darkMode = ref(true)
     $q.dark.set(darkMode.value)
