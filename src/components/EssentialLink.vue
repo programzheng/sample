@@ -1,19 +1,24 @@
 <template>
   <q-expansion-item
     clickable
-    expansion-separator
     :icon="icon"
     :label="title"
   >
-    <q-expansion-item
+    <q-item
       v-for="children in childrens"
       :key="children.title"
-      :header-inset-level="1"
-      :icon="children.icon"
-      :label="children.title"
+      :inset-level="1"
+      tag="a"
       :to="children.link"
+      clickable
     >
-    </q-expansion-item>
+      <q-item-section
+        avatar
+      >
+        <q-avatar :icon="children.icon"/>
+      </q-item-section>
+      <q-item-section>{{children.title}}</q-item-section>
+    </q-item>
   </q-expansion-item>
 </template>
 

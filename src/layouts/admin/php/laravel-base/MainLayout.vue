@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+		<q-header elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -33,29 +33,29 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          網頁導覽
-        </q-item-label>
+		<q-drawer
+			v-model="leftDrawerOpen"
+			bordered
+		>
+			<q-list>
+				<q-item-label
+						header
+				>
+					網頁導覽
+				</q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+				<EssentialLink
+					v-for="link in essentialLinks"
+					:key="link.title"
+					v-bind="link"
+				/>
+			</q-list>
+		</q-drawer>
 
-    <q-page-container>
+		<q-page-container>
       <router-view />
     </q-page-container>
-  </q-layout>
+	</q-layout>
 </template>
 
 <script lang="ts">
@@ -64,15 +64,15 @@ import { ionMdSquareOutline } from '@quasar/extras/ionicons-v4'
 
 const linksList = [
   {
-    title: 'javascript',
-    caption: 'javascript',
-    icon: 'code',
+    title: '會員',
+    caption: '會員',
+    icon: 'person',
     childrens: [
       {
-        title: 'timestamp',
-        caption: 'timestamp',
-        icon: 'timer',
-        link: '/javascript/timestamp'
+        title: '使用者',
+        caption: '使用者',
+        icon: 'people',
+        link: '/admin/php/laravel-base/user'
       }
     ]
   }

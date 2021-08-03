@@ -4,6 +4,8 @@ import {
   createRouter,
   createWebHashHistory,
   createWebHistory,
+  RouteLocationNormalized,
+  NavigationGuardNext
 } from 'vue-router';
 import { StateInterface } from '../store';
 import routes from './routes';
@@ -33,6 +35,17 @@ export default route<StateInterface>(function (/* { store, ssrContext } */) {
       process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE
     ),
   });
+
+  /**
+   * Run the middleware(s) using the beforeEach hook
+   */
+  Router.beforeEach((to, from, next) => {
+    if (!to.meta.middlewares) return next()
+    const middlewares = to.meta.middlewares as Array<(to:RouteLocationNormalized, from:RouteLocationNormalized, next:NavigationGuardNext)=>void>
+    middlewares.forEach((middleware:((to:RouteLocationNormalized, from:RouteLocationNormalized, next:NavigationGuardNext)=>void)) => {
+      middleware(to, from, next)
+    })
+  })
 
   return Router;
 });
