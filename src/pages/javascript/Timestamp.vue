@@ -62,7 +62,6 @@ name: 'Timestamp',
 setup() {
   const inputTimestamp = ref(0)
   const inputDate = computed(() => {
-    console.log(inputTimestamp.value)
     let date = new Date(inputTimestamp.value*1000).toLocaleString()
     return date
   })
