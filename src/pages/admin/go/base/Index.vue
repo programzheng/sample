@@ -1,5 +1,5 @@
 <template>
 	<div class="q-pa-md">
-		LaravelBase
+		GoBase
 	</div>
 </template>
