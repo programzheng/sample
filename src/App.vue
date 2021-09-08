@@ -9,7 +9,7 @@ export default defineComponent({
   name: 'App',
   setup() {
     const $q = useQuasar()
-    $q.dark.set(Boolean($q.localStorage.getItem('dark_mode')))
+    $q.dark.set(Boolean($q.localStorage.getItem('dark_mode')??true))
     provide('api',  {
       laravelBaseApi: process.env.LARAVEL_BASE_API
     })
