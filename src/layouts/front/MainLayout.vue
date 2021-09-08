@@ -25,10 +25,10 @@
         </div>
 
         <q-toggle
-          v-model="darkMode"
+          v-model="darkMode.status.value"
           color="black"
           label="Dark Mode"
-          @click="darkModeSet"
+          @click="darkMode.toggle"
         />
       </q-toolbar>
     </q-header>
@@ -78,8 +78,8 @@ const linksList = [
   }
 ];
 
-import { useQuasar } from 'quasar'
-import { defineComponent, inject, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
+import darkMode from 'boot/darkMode'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -88,13 +88,7 @@ export default defineComponent({
     EssentialLink
   },
   setup () {
-    const api = inject('api');
-    console.log(api)
-    const $q = useQuasar()
-    const darkMode = ref(true)
-    $q.dark.set(darkMode.value)
     const leftDrawerOpen = ref(false)
-
     return {
       ionMdSquareOutline,
       essentialLinks: linksList,
@@ -102,10 +96,7 @@ export default defineComponent({
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
-      darkMode,
-      darkModeSet () {
-        $q.dark.set(darkMode.value)
-      }
+      darkMode
     }
   }
 })

@@ -5,14 +5,17 @@ import Error404 from 'pages/Error404.vue'
 import FrontMainLayout from 'layouts/front/MainLayout.vue'
 import Index from 'pages/Index.vue'
 import JavascriptTimestamp from 'pages/javascript/Timestamp.vue'
+import JavascriptDate from 'pages/javascript/Date.vue'
 
-//admin
+//go-base
 import AdminGoBaseMainLayout from 'layouts/admin/go/base/MainLayout.vue'
+import AdminGoBaseIndex from 'pages/admin/go/base/Index.vue'
+import AdminGoBaseLogin from 'pages/admin/go/base/Login.vue'
 //laravel-base
 import AdminPhpLaravelBaseMainLayout from 'layouts/admin/php/laravel-base/MainLayout.vue'
 import AdminPhpLaravelBaseIndex from 'pages/admin/php/laravel-base/Index.vue'
 import AdminPhpLaravelBaseLogin from 'pages/admin/php/laravel-base/Login.vue'
-import { laravelBaseAdminAuth } from './middlewares'
+// import { laravelBaseAdminAuth } from './middlewares'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -27,15 +30,35 @@ const routes: RouteRecordRaw[] = [
         path: 'javascript/timestamp',
         name: 'javascript.timestamp',
         component: JavascriptTimestamp
+      },
+      {
+        path: 'javascript/date',
+        name: 'javascript.date',
+        component: JavascriptDate
       }
     ],
   },
 
   //go
   {
+    path: '/admin/go/base/login',
+    name: 'admin.go.base.login',
+    component: AdminGoBaseLogin
+  },
+  {
     path: '/admin/go/base',
     name: 'admin.go.base',
-    component: AdminGoBaseMainLayout
+    component: AdminGoBaseMainLayout,
+    meta: {
+      // middlewares: [goBaseAdminAuth]
+    },
+    children: [
+      {
+        path: '',
+        name: 'admin.go.base.index',
+        component: AdminGoBaseIndex
+      }
+    ]
   },
 
   //php
@@ -48,7 +71,7 @@ const routes: RouteRecordRaw[] = [
     path: '/admin/php/laravel-base',
     component: AdminPhpLaravelBaseMainLayout,
     meta: {
-      middlewares: [laravelBaseAdminAuth]
+      // middlewares: [laravelBaseAdminAuth]
     },
     children: [
       {
