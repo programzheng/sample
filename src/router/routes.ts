@@ -6,6 +6,11 @@ import FrontMainLayout from 'layouts/front/MainLayout.vue'
 import Index from 'pages/Index.vue'
 import JavascriptTimestamp from 'pages/javascript/Timestamp.vue'
 import JavascriptDate from 'pages/javascript/Date.vue'
+//go-language-repository
+import GoLanguageRepositoryMainLayout from 'layouts/front/go/language-repository/MainLayout.vue'
+import GoLanguageRepositoryLogin from 'pages/go/language-repository/Login.vue'
+import GoLanguageRepositoryIndex from 'pages/go/language-repository/Index.vue'
+// import { goLanguageRepositoryAuth } from './middlewares'
 
 //go-base
 import AdminGoBaseMainLayout from 'layouts/admin/go/base/MainLayout.vue'
@@ -35,7 +40,26 @@ const routes: RouteRecordRaw[] = [
         path: 'javascript/date',
         name: 'javascript.date',
         component: JavascriptDate
-      }
+      },
+      {
+        path: 'go/language-repository/login',
+        name: 'go.language-repository.login',
+        component: GoLanguageRepositoryLogin
+      },
+      {
+        path: '/go/language-repository',
+        component: GoLanguageRepositoryMainLayout,
+        meta: {
+          // middlewares: [goLanguageRepositoryAuth]
+        },
+        children: [
+          {
+            path: '',
+            name: 'go.language-repository.index',
+            component: GoLanguageRepositoryIndex,
+          }
+        ]
+      },
     ],
   },
 

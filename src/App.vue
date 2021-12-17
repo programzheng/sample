@@ -2,7 +2,7 @@
   <router-view />
 </template>
 <script lang="ts">
-import { defineComponent, provide } from 'vue';
+import { defineComponent } from 'vue';
 import { useQuasar } from 'quasar'
 
 export default defineComponent({
@@ -10,9 +10,6 @@ export default defineComponent({
   setup() {
     const $q = useQuasar()
     $q.dark.set(Boolean($q.localStorage.getItem('dark_mode')??true))
-    provide('api',  {
-      laravelBaseApi: process.env.LARAVEL_BASE_API
-    })
   }
 })
 </script>
