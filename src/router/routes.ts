@@ -10,7 +10,8 @@ import JavascriptDate from 'pages/javascript/Date.vue'
 import GoLanguageRepositoryMainLayout from 'layouts/front/go/language-repository/MainLayout.vue'
 import GoLanguageRepositoryLogin from 'pages/go/language-repository/Login.vue'
 import GoLanguageRepositoryIndex from 'pages/go/language-repository/Index.vue'
-// import { goLanguageRepositoryAuth } from './middlewares'
+import GoLanguageRepositoryDictionary from 'pages/go/language-repository/Dictionary.vue'
+import { goLanguageRepositoryAuth } from './middlewares'
 
 //go-base
 import AdminGoBaseMainLayout from 'layouts/admin/go/base/MainLayout.vue'
@@ -50,13 +51,18 @@ const routes: RouteRecordRaw[] = [
         path: '/go/language-repository',
         component: GoLanguageRepositoryMainLayout,
         meta: {
-          // middlewares: [goLanguageRepositoryAuth]
+          middlewares: [goLanguageRepositoryAuth]
         },
         children: [
           {
             path: '',
             name: 'go.language-repository.index',
             component: GoLanguageRepositoryIndex,
+          },
+          {
+            path: 'dictionary',
+            name: 'go.language-repository.dictionary',
+            component: GoLanguageRepositoryDictionary
           }
         ]
       },

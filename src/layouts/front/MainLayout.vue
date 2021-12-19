@@ -75,7 +75,20 @@ const linksList = [
         link: '/javascript/timestamp'
       }
     ]
-  }
+  },
+  {
+    title: 'go',
+    caption: 'go',
+    icon: 'code',
+    childrens: [
+      {
+        title: 'language-repository',
+        caption: 'language-repository',
+        icon: 'menu_book',
+        link: '/go/language-repository'
+      }
+    ]
+  },
 ];
 
 import { defineComponent, ref } from 'vue'

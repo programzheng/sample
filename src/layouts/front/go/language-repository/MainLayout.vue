@@ -64,32 +64,30 @@ import { ionMdSquareOutline } from '@quasar/extras/ionicons-v4'
 
 const linksList = [
   {
-    title: '會員',
-    caption: '會員',
-    icon: 'person',
+    title: '辭典',
+    caption: '辭典',
+    icon: 'menu_book',
     childrens: [
       {
-        title: '使用者',
-        caption: '使用者',
-        icon: 'people',
-        link: '/admin/php/laravel-base/user'
+        title: '列表',
+        caption: '列表',
+        icon: 'list',
+        link: '/go/language-repository/dictionary'
       }
     ]
   }
 ];
 
 import { useQuasar } from 'quasar'
-import { defineComponent, inject, ref } from 'vue'
+import { ref } from 'vue'
 
-export default defineComponent({
+export default {
   name: 'MainLayout',
 
   components: {
     EssentialLink
   },
   setup () {
-    const api = inject('api');
-    console.log(api)
     const $q = useQuasar()
     const darkMode = ref(true)
     $q.dark.set(darkMode.value)
@@ -108,5 +106,5 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>

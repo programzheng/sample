@@ -39,44 +39,49 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  interface Token{
+    token: string;
+  }
+
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router';
   import { useQuasar } from 'quasar'
   import { goLanguageRepositoryApi } from 'boot/axios'
 
-  export default defineComponent({
-    setup () {
-      const $q = useQuasar()
+export default{
+  setup () {
+    const $q = useQuasar()
+    const router = useRouter()
 
-      const account = ref('')
-      const password = ref('')
+    const account = ref('')
+    const password = ref('')
+    return {
+      account,
+      password,
 
-      return {
-        account,
-        password,
+      async onSubmit () {
+        //login request
+        return await goLanguageRepositoryApi.post<Token>('/api/v1/user/login', {
+          account: account.value,
+          password: password.value,
+        }).then((response) => {
+          const token = response.data.token
+          $q.localStorage.set('go_language_repository_user_token', token)
+          $q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: '登入成功'
+          })
+          return router.push({ name: 'go.language-repository.index'})
+        })
+      },
 
-        onSubmit () {
-          //login request
-          return goLanguageRepositoryApi.post('/api/v1/user/login', {
-            account: account.value,
-            password: password.value,
-          }).then((response) => {
-            console.log(response)
-            $q.notify({
-              color: 'green-4',
-              textColor: 'white',
-              icon: 'cloud_done',
-              message: '登入成功'
-            })
-          }).catch((err) => {
-            console.log(err)
-          });
-        },
-
-        onReset () {
-          account.value = ''
-          password.value = ''
-        }
+      onReset () {
+        account.value = ''
+        password.value = ''
       }
     }
-  })
+  }
+}
 </script>
