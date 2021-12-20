@@ -67,6 +67,11 @@ interface Row {
     }
 }
 
+interface AddResponse {
+  status: string;
+  results: Row;
+}
+
 const columns = [
   {
     name: 'ID',
@@ -87,7 +92,7 @@ export default {
   setup () {
     const $q = useQuasar()
     let apiData = reactive({
-      results: [] as any[]
+      results: [] as Row[]
     })
     const filter = ref('')
     const loading = ref(false)
@@ -132,31 +137,34 @@ export default {
         },
 
         async addRow() {
-          return await goLanguageRepositoryApi.post('api/v1/dictionary', add).then(() => {
-            $q.notify({
-              color: 'green-4',
-              textColor: 'white',
-              icon: 'cloud_done',
-              message: '新增成功'
-            })
-            return getApiData()
+          return await goLanguageRepositoryApi.post<AddResponse>('api/v1/dictionary', add).then((response) => {
+            if(response.data.status === 'success'){
+              $q.notify({
+                color: 'green-4',
+                textColor: 'white',
+                icon: 'cloud_done',
+                message: '新增成功'
+              })
+              return getApiData()
+            }
           })
         },
 
-        removeRow() {
-          selected.value.forEach(async (row: Row, index: number) => {
-            await goLanguageRepositoryApi.delete(`api/v1/dictionary/${row.ID}`).then(() => {
+        async removeRow() {
+          const results:Promise<void>[] = []
+          selected.value.forEach((row: Row, index: number) => {
+            results.push(goLanguageRepositoryApi.delete(`api/v1/dictionary/${row.ID}`).then(() => {
               $q.notify({
                 color: 'green-4',
                 textColor: 'white',
                 icon: 'cloud_done',
                 message: '刪除成功'
               })
-            })
+            }))
             delete selected.value[index]
-            getApiData()
           })
-
+          await Promise.all(results)
+          await getApiData()
         },
     }
   }
