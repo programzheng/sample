@@ -50,7 +50,7 @@ goLanguageRepositoryApi.interceptors.response.use((response) => {
       message: '伺服器錯誤'
     })
   }
-  return error
+  return Promise.reject(error);
 });
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
