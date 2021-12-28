@@ -1,6 +1,6 @@
 import { LocalStorage, Notify } from 'quasar'
 import { boot } from 'quasar/wrappers';
-import axios, { AxiosInstance, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig , AxiosInstance, AxiosError } from 'axios';
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
@@ -17,15 +17,26 @@ interface ApiErrorResponseData{
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({ baseURL: 'https://api.example.com' });
-const goLanguageRepositoryApiUserToken:string = LocalStorage.getItem('go_language_repository_user_token')??''
 const goLanguageRepositoryApi = axios.create({
   baseURL: process.env.GO_LANGUAGE_REPOSITORY_API,
   headers: {
     'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${goLanguageRepositoryApiUserToken}`
+    'Content-Type': 'application/json'
   }
 })
+goLanguageRepositoryApi.interceptors.request.use((config: AxiosRequestConfig) => {
+  //set user token
+  const userToken:string = LocalStorage.getItem('go_language_repository_user_token')??''
+  const authorization = 'Bearer '+userToken
+  config.headers = {
+    Authorization: authorization,
+  }
+
+  return config  
+}, (error) => {
+  return Promise.reject(error);
+})
+
 goLanguageRepositoryApi.interceptors.response.use((response) => {
   return response
 }, (error:Error|AxiosError) => {
