@@ -16,7 +16,8 @@
             </template>
           </q-input>
           <q-space />
-          <q-btn color="primary" :disable="loading" label="Add row" @click="addDialogVisit" />
+          <q-btn class="q-ml-sm" color="primary" :disable="loading" label="Add row" @click="addDialogVisit" />
+          <q-btn class="q-ml-sm" color="amber" :disable="loading" label="Edit row" @click="editDialogVisit" />
           <q-btn class="q-ml-sm" color="denger" :disable="loading" label="Remove row" @click="removeRow" />
         </template>
         </q-table>
@@ -28,19 +29,47 @@
           <div class="text-h6">英文</div>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="add.english" autofocus @keyup.enter="addDialog = false" />
+          <q-input dense v-model="addData.english" autofocus @keyup.enter="addDialog = false" />
         </q-card-section>
 
         <q-card-section>
           <div class="text-h6">中文</div>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="add.chinese" autofocus @keyup.enter="addDialog = false" />
+          <q-input dense v-model="addData.chinese" autofocus @keyup.enter="addDialog = false" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
           <q-btn flat label="關閉" v-close-popup />
           <q-btn flat label="新增" v-close-popup @click="addRow" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="editDialog">
+      <q-card style="min-width: 350px" v-for="edit in edits" :key="edit.id">
+
+      <q-card-section>
+        <div class="text-h6">ID: {{edit.id}}</div>
+      </q-card-section>
+
+        <q-card-section>
+          <div class="text-h6">英文</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="edit.english" autofocus @keyup.enter="editDialog = false" />
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-h6">中文</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="edit.chinese" autofocus @keyup.enter="editDialog = false" />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="關閉" v-close-popup />
+          <q-btn flat label="編輯" v-close-popup @click="editRow(edit.id, edit)" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -67,9 +96,26 @@ interface Row {
     }
 }
 
+interface AddData {
+  english: string;
+  chinese: string;
+}
+
 interface AddResponse {
   status: string;
   results: Row;
+}
+
+interface Edits {
+  id: number;
+  english: string;
+  chinese: string;
+}
+
+interface EditData {
+  id: number;
+  english: string;
+  chinese: string;
 }
 
 const columns = [
@@ -97,11 +143,17 @@ export default {
     const filter = ref('')
     const loading = ref(false)
     const addDialog = ref(false)
+    const editDialog = ref(false)
     const selected = ref([])
-    const add = reactive({
+    const addData = reactive({
       english: '',
       chinese: '',
-    })
+    }) as AddData
+    let edits = reactive([]) as Edits[]
+    const editData = reactive({
+      english: '',
+      chinese: ''
+    }) as EditData
 
     const setApiData = (data:Row[]) => {
       apiData.results = data
@@ -122,7 +174,10 @@ export default {
         loading,
         selected,
         addDialog,
-        add,
+        editDialog,
+        addData,
+        edits,
+        editData,
 
         apiData,
         setApiData,
@@ -136,14 +191,49 @@ export default {
           addDialog.value = true
         },
 
+        editDialogVisit() {
+          if (selected.value.length === 0) {
+            $q.notify({
+              color: 'red-4',
+              textColor: 'white',
+              icon: 'error',
+              message: '沒有選擇資料'
+            })
+            return
+          }
+          edits.length = 0
+          selected.value.forEach((row: Row) => {
+            edits.push({
+              id: row.ID,
+              english: row.language.english,
+              chinese: row.language.chinese,
+            })
+          })
+          editDialog.value = true
+        },
+
         async addRow() {
-          return await goLanguageRepositoryApi.post<AddResponse>('api/v1/dictionary', add).then((response) => {
+          return await goLanguageRepositoryApi.post<AddResponse>('api/v1/dictionary', addData).then((response) => {
             if(response.data.status === 'success'){
               $q.notify({
                 color: 'green-4',
                 textColor: 'white',
                 icon: 'cloud_done',
                 message: '新增成功'
+              })
+              return getApiData()
+            }
+          })
+        },
+
+        async editRow(id:number, editData:EditData) {
+          return await goLanguageRepositoryApi.put<AddResponse>(`api/v1/dictionary/${id}`, editData).then((response) => {
+            if(response.data.status === 'success'){
+              $q.notify({
+                color: 'green-4',
+                textColor: 'white',
+                icon: 'cloud_done',
+                message: '編輯成功'
               })
               return getApiData()
             }
