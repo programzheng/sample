@@ -48,6 +48,7 @@
           v-for="link in essentialLinks"
           :key="link.title"
           v-bind="link"
+          :toggle-left-drawer="toggleLeftDrawer"
         />
       </q-list>
     </q-drawer>

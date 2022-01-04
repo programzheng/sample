@@ -11,6 +11,7 @@
       tag="a"
       :to="children.link"
       clickable
+      @click="toggleLeftDrawer"
     >
       <q-item-section
         avatar
@@ -28,6 +29,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'EssentialLink',
   props: {
+    toggleLeftDrawer: Function,
     title: {
       type: String,
       required: true
