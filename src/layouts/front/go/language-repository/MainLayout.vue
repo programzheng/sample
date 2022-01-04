@@ -4,7 +4,7 @@
       <q-toolbar>
 
         <q-toolbar-title>
-          programzheng's projects
+          Go Language Repository
         </q-toolbar-title>
 
         <div class="q-pr-auto">
