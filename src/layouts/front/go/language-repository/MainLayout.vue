@@ -2,14 +2,6 @@
   <q-layout view="lHh Lpr lFf">
 		<q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
 
         <q-toolbar-title>
           programzheng's projects
@@ -33,25 +25,6 @@
       </q-toolbar>
     </q-header>
 
-		<q-drawer
-			v-model="leftDrawerOpen"
-			bordered
-		>
-			<q-list>
-				<q-item-label
-						header
-				>
-					網頁導覽
-				</q-item-label>
-
-				<EssentialLink
-					v-for="link in essentialLinks"
-					:key="link.title"
-					v-bind="link"
-				/>
-			</q-list>
-		</q-drawer>
-
 		<q-page-container>
       <router-view />
     </q-page-container>
@@ -59,47 +32,21 @@
 </template>
 
 <script lang="ts">
-import EssentialLink from 'components/EssentialLink.vue'
 import { ionMdSquareOutline } from '@quasar/extras/ionicons-v4'
 
-const linksList = [
-  {
-    title: '辭典',
-    caption: '辭典',
-    icon: 'menu_book',
-    childrens: [
-      {
-        title: '列表',
-        caption: '列表',
-        icon: 'list',
-        link: '/go/language-repository/dictionary'
-      }
-    ]
-  }
-];
-
-import { useQuasar } from 'quasar'
 import { ref } from 'vue'
+import { useQuasar } from 'quasar'
 
 export default {
   name: 'MainLayout',
 
-  components: {
-    EssentialLink
-  },
   setup () {
     const $q = useQuasar()
     const darkMode = ref(true)
     $q.dark.set(darkMode.value)
-    const leftDrawerOpen = ref(false)
 
     return {
       ionMdSquareOutline,
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      },
       darkMode,
       darkModeSet () {
         $q.dark.set(darkMode.value)
