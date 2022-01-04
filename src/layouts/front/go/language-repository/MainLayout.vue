@@ -8,9 +8,9 @@
         </q-toolbar-title>
 
         <div class="q-pr-auto">
-          <a class="header-icon-link" href="/">
+          <router-link class="header-icon-link" to="/">
             <q-icon name="home" size="md"></q-icon>
-          </a>
+          </router-link>
           <a class="header-icon-link" href="https://github.com/programzheng">
             <q-icon name="ion-logo-github" size="md"></q-icon>
           </a>
