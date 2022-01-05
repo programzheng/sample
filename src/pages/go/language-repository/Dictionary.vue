@@ -1,5 +1,8 @@
 <template>
     <div class="q-pa-md">
+        <div class="q-pa-md">
+          <q-btn class="q-ml-sm" color="green" :disable="loading" label="回到上一頁" @click="$router.back()" />
+        </div>
         <q-table
           title="Treats"
           :rows="apiData.results"
@@ -77,6 +80,7 @@
 
 <script lang="ts">
 import { ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
 import { goLanguageRepositoryApi } from 'boot/axios'
 interface Row {
@@ -137,6 +141,7 @@ const columns = [
 export default {
   setup () {
     const $q = useQuasar()
+
     let apiData = reactive({
       results: [] as Row[]
     })
