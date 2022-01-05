@@ -8,7 +8,7 @@
         </q-toolbar-title>
 
         <div class="q-pr-auto">
-          <router-link class="header-icon-link" to="/">
+          <router-link class="header-icon-link" :to="{name: 'index'}">
             <q-icon name="home" size="md"></q-icon>
           </router-link>
           <a class="header-icon-link" href="https://github.com/programzheng">
