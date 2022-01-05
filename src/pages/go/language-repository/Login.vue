@@ -51,7 +51,7 @@
 export default{
   setup () {
     const $q = useQuasar()
-    const router = useRouter()
+    const $router = useRouter()
 
     const account = ref('')
     const password = ref('')
@@ -73,7 +73,7 @@ export default{
             icon: 'cloud_done',
             message: '登入成功'
           })
-          return router.push({ name: 'go.language-repository.index'})
+          return $router.push({ name: 'go.language-repository.index'})
         })
       },
 
