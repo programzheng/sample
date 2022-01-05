@@ -7,6 +7,10 @@
           Go Language Repository
         </q-toolbar-title>
 
+        <div class="q-pr-auto" v-if="checkLogin">
+          <q-btn icon="logout" dense :ripple="false" size="md" unelevated @click="logout"></q-btn>
+        </div>
+
         <div class="q-pr-auto">
           <router-link class="header-icon-link" :to="{name: 'index'}">
             <q-icon name="home" size="md"></q-icon>
@@ -35,13 +39,17 @@
 import { ionMdSquareOutline } from '@quasar/extras/ionicons-v4'
 
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
+import { goLanguageRepositoryApi } from 'boot/axios'
 
 export default {
   name: 'MainLayout',
 
   setup () {
     const $q = useQuasar()
+    const $router = useRouter()
+
     const darkMode = ref(true)
     $q.dark.set(darkMode.value)
 
@@ -50,6 +58,20 @@ export default {
       darkMode,
       darkModeSet () {
         $q.dark.set(darkMode.value)
+      },
+      async checkLogin () {
+        const token = $q.localStorage.getItem('go_language_repository_user_token')
+        if(!token){
+          return false
+        }
+        await goLanguageRepositoryApi.post('api/v1/user/auth').catch(() => {
+          return true
+        })
+        return false
+      },
+      logout () {
+        $q.localStorage.set('go_language_repository_user_token', null)
+        return $router.push({ name: 'go.language-repository.login'})
       }
     }
   }
