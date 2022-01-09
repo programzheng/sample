@@ -79,7 +79,11 @@ module.exports = configure(function (ctx) {
       chainWebpack (/* chain */) {
         //
       },
-      env: require('dotenv').config().parsed
+      env: (() => {
+        const env = Object.assign(process.env, require('dotenv').config().parsed)
+        console.log(env)
+        return env
+      })()
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
