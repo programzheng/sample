@@ -17,6 +17,11 @@ import { goLanguageRepositoryAuth } from './middlewares'
 import AdminGoBaseMainLayout from 'layouts/admin/go/base/MainLayout.vue'
 import AdminGoBaseIndex from 'pages/admin/go/base/Index.vue'
 import AdminGoBaseLogin from 'pages/admin/go/base/Login.vue'
+
+//go-messaging-socket
+import GoMessagingSocketMainLayout from 'layouts/front/go/messaging-socket/MainLayout.vue'
+import GoMessagingSocketChat from 'pages/go/messaging-socket/Chat.vue'
+
 //laravel-base
 import AdminPhpLaravelBaseMainLayout from 'layouts/admin/php/laravel-base/MainLayout.vue'
 import AdminPhpLaravelBaseIndex from 'pages/admin/php/laravel-base/Index.vue'
@@ -63,6 +68,17 @@ const routes: RouteRecordRaw[] = [
             path: 'dictionary',
             name: 'go.language-repository.dictionary',
             component: GoLanguageRepositoryDictionary
+          }
+        ]
+      },
+      {
+        path: '/go/messaging-socket',
+        component: GoMessagingSocketMainLayout,
+        children: [
+          {
+            path: 'chat',
+            name: 'go.messaging-socket.chat',
+            component: GoMessagingSocketChat,
           }
         ]
       },
