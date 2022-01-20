@@ -2,22 +2,22 @@
 	<div></div>
 </template>
 
-<script>
-import io from 'socket.io-client';
+<script lang='ts'>
+import { io, Socket } from 'socket.io-client'
 
 export default {
 	setup() {
-		var socket = io(process.env.GO_MESSAGING_SOCKET)
+		const socket: Socket = io(process.env.GO_MESSAGING_SOCKET as string);
 
 		socket.on('connect', () => {
 			console.log(socket.id)
 		})
 
-		socket.on('notice', (data) => {
-			console.log(data)
-		})
+		// socket.on('notice', () => {
 
-		socket.emit('reply', 'Hello!')
+		// })
+
+		// socket.emit('reply', 'Hello!')
 	}
 }
 </script>
