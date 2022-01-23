@@ -18,9 +18,10 @@ import AdminGoBaseMainLayout from 'layouts/admin/go/base/MainLayout.vue'
 import AdminGoBaseIndex from 'pages/admin/go/base/Index.vue'
 import AdminGoBaseLogin from 'pages/admin/go/base/Login.vue'
 
-//go-messaging-socket
-import GoMessagingSocketMainLayout from 'layouts/front/go/messaging-socket/MainLayout.vue'
-import GoMessagingSocketChat from 'pages/go/messaging-socket/Chat.vue'
+//node-messaging-socket
+import NodeMessagingSocketMainLayout from 'layouts/front/node/messaging-socket/MainLayout.vue'
+import NodeMessagingSocketIndex from 'pages/node/messaging-socket/Index.vue'
+import NodeMessagingSocketChat from 'pages/node/messaging-socket/Chat.vue'
 
 //laravel-base
 import AdminPhpLaravelBaseMainLayout from 'layouts/admin/php/laravel-base/MainLayout.vue'
@@ -72,13 +73,18 @@ const routes: RouteRecordRaw[] = [
         ]
       },
       {
-        path: '/go/messaging-socket',
-        component: GoMessagingSocketMainLayout,
+        path: '/node/messaging-socket',
+        component: NodeMessagingSocketMainLayout,
         children: [
           {
+            path: '',
+            name: 'node.messaging-socket.index',
+            component: NodeMessagingSocketIndex,
+          },
+          {
             path: 'chat',
-            name: 'go.messaging-socket.chat',
-            component: GoMessagingSocketChat,
+            name: 'node.messaging-socket.chat',
+            component: NodeMessagingSocketChat,
           }
         ]
       },

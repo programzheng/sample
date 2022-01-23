@@ -90,6 +90,19 @@ const linksList = [
       }
     ]
   },
+    {
+    title: 'node',
+    caption: 'node',
+    icon: 'code',
+    childrens: [
+      {
+        title: 'messaging-socket',
+        caption: 'messaging-socket',
+        icon: 'menu_book',
+        link: '/node/messaging-socket'
+      }
+    ]
+  },
 ];
 
 import { defineComponent, ref } from 'vue'

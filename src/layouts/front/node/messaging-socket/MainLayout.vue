@@ -4,7 +4,7 @@
       <q-toolbar>
 
         <q-toolbar-title>
-          Go Messaging Socket
+          Node Messaging Socket
         </q-toolbar-title>
 
         <div class="q-pr-auto" v-if="false">
