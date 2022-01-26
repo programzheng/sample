@@ -63,6 +63,58 @@ goLanguageRepositoryApi.interceptors.response.use((response) => {
   }
   return Promise.reject(error);
 });
+
+/**
+ * node-messaging-socket-api
+ */
+const nodeMessagingSocketApiUserTokenKey = 'node_messaging_socket_user_token';
+const nodeMessagingSocketApi = axios.create({
+  baseURL: process.env.NODE_MESSAGING_SOCKET_API,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+})
+nodeMessagingSocketApi.interceptors.request.use((config: AxiosRequestConfig) => {
+  //set user token
+  const userToken:string = LocalStorage.getItem(nodeMessagingSocketApiUserTokenKey)??''
+  const authorization = 'Bearer '+userToken
+  config.headers = {
+    Authorization: authorization,
+  }
+
+  return config  
+}, (error) => {
+  return Promise.reject(error);
+})
+
+nodeMessagingSocketApi.interceptors.response.use((response) => {
+  return response
+}, (error:Error|AxiosError) => {
+  // whatever you want to do with the error
+  if (axios.isAxiosError(error) && error.response) {
+    const data = error.response?.data as ApiErrorResponseData
+    const message:string = data.message
+    if(message){
+      Notify.create({
+        color: 'red-4',
+        textColor: 'white',
+        icon: 'error',
+        message: message
+      })
+    }
+  }
+  else{
+    Notify.create({
+      color: 'red-4',
+      textColor: 'white',
+      icon: 'error',
+      message: '伺服器錯誤'
+    })
+  }
+  return Promise.reject(error);
+});
+
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
@@ -74,6 +126,14 @@ export default boot(({ app }) => {
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
   app.config.globalProperties.$goLanguageRepositoryApi = goLanguageRepositoryApi;
+  app.config.globalProperties.$nodeMessagingSocketApi = nodeMessagingSocketApi;
+
 });
 
-export { axios, api, goLanguageRepositoryApi };
+export {
+  axios,
+  api,
+  goLanguageRepositoryApi,
+  nodeMessagingSocketApi,
+  nodeMessagingSocketApiUserTokenKey
+};

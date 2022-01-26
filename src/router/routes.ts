@@ -20,8 +20,10 @@ import AdminGoBaseLogin from 'pages/admin/go/base/Login.vue'
 
 //node-messaging-socket
 import NodeMessagingSocketMainLayout from 'layouts/front/node/messaging-socket/MainLayout.vue'
+import NodeMessagingSocketLogin from 'pages/node/messaging-socket/Login.vue'
 import NodeMessagingSocketIndex from 'pages/node/messaging-socket/Index.vue'
 import NodeMessagingSocketChat from 'pages/node/messaging-socket/Chat.vue'
+import { nodeMessagingSocketAuth } from './middlewares'
 
 //laravel-base
 import AdminPhpLaravelBaseMainLayout from 'layouts/admin/php/laravel-base/MainLayout.vue'
@@ -54,6 +56,11 @@ const routes: RouteRecordRaw[] = [
         component: GoLanguageRepositoryLogin
       },
       {
+        path: 'node/messaging-socket/login',
+        name: 'node.messaging-socket.login',
+        component: NodeMessagingSocketLogin
+      },
+      {
         path: '/go/language-repository',
         component: GoLanguageRepositoryMainLayout,
         meta: {
@@ -75,6 +82,9 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/node/messaging-socket',
         component: NodeMessagingSocketMainLayout,
+        meta: {
+          middlewares: [nodeMessagingSocketAuth]
+        },
         children: [
           {
             path: '',

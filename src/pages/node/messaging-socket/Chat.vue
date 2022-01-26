@@ -21,7 +21,9 @@
 
 <script lang='ts'>
 import { ref, reactive } from 'vue'
+import { useQuasar } from 'quasar'
 import { io, Socket } from 'socket.io-client'
+import { nodeMessagingSocketApiUserTokenKey } from 'boot/axios'
 
 interface Message {
 	id: number;
@@ -31,7 +33,13 @@ interface Message {
 
 export default {
 	setup() {
-		const socket: Socket = io(process.env.NODE_MESSAGING_SOCKET as string);
+		const $q = useQuasar()
+		const userToken = $q.localStorage.getItem(nodeMessagingSocketApiUserTokenKey)
+		const socket: Socket = io(process.env.NODE_MESSAGING_SOCKET as string, {
+			extraHeaders: {
+				Authorization: `Bearer ${userToken as string}`
+			}
+		});
 		let messages = reactive({
 			results: [] as Message[]
 		})
