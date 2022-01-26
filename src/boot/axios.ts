@@ -17,6 +17,10 @@ interface ApiErrorResponseData{
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({ baseURL: 'https://api.example.com' });
+/**
+ * go-language-repository-api
+ */
+const goLanguageRepositoryUserTokenKey = 'go_language_repository_user_token'
 const goLanguageRepositoryApi = axios.create({
   baseURL: process.env.GO_LANGUAGE_REPOSITORY_API,
   headers: {
@@ -26,7 +30,7 @@ const goLanguageRepositoryApi = axios.create({
 })
 goLanguageRepositoryApi.interceptors.request.use((config: AxiosRequestConfig) => {
   //set user token
-  const userToken:string = LocalStorage.getItem('go_language_repository_user_token')??''
+  const userToken:string = LocalStorage.getItem(goLanguageRepositoryUserTokenKey)??''
   const authorization = 'Bearer '+userToken
   config.headers = {
     Authorization: authorization,
@@ -134,6 +138,7 @@ export {
   axios,
   api,
   goLanguageRepositoryApi,
+  goLanguageRepositoryUserTokenKey,
   nodeMessagingSocketApi,
   nodeMessagingSocketApiUserTokenKey
 };
