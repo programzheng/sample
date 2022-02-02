@@ -20,6 +20,7 @@ import AdminGoBaseLogin from 'pages/admin/go/base/Login.vue'
 
 //node-messaging-socket
 import NodeMessagingSocketMainLayout from 'layouts/front/node/messaging-socket/MainLayout.vue'
+import NodeMessagingSocketRegister from 'pages/node/messaging-socket/Register.vue'
 import NodeMessagingSocketLogin from 'pages/node/messaging-socket/Login.vue'
 import NodeMessagingSocketIndex from 'pages/node/messaging-socket/Index.vue'
 import NodeMessagingSocketChat from 'pages/node/messaging-socket/Chat.vue'
@@ -54,6 +55,12 @@ const routes: RouteRecordRaw[] = [
         path: 'go/language-repository/login',
         name: 'go.language-repository.login',
         component: GoLanguageRepositoryLogin
+      },
+      //node messaging socket
+      {
+        path: 'node/messaging-socket/register',
+        name: 'node.messaging-socket.register',
+        component: NodeMessagingSocketRegister
       },
       {
         path: 'node/messaging-socket/login',

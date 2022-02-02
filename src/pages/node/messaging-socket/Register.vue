@@ -2,7 +2,7 @@
   <q-page class="column items-center justify-evenly">
     <q-card>
       <q-card-section>
-        登入
+        註冊會員
       </q-card-section>
       <div class="q-pa-md">
         <q-form
@@ -12,7 +12,7 @@
         >
           <q-input
             filled
-            v-model="account"
+            v-model="register.account"
             type="email"
             label="帳號"
             lazy-rules
@@ -21,9 +21,20 @@
 
           <q-input
             filled
-            v-model="password"
+            v-model="register.password"
             type="password"
             label="密碼"
+            lazy-rules
+            :rules="[
+              val => val !== null && val !== '' || '不可以留空',
+            ]"
+          />
+
+          <q-input
+            filled
+            v-model="register.name"
+            type="text"
+            label="姓名"
             lazy-rules
             :rules="[
               val => val !== null && val !== '' || '不可以留空',
@@ -38,14 +49,20 @@
       </div>
     </q-card>
     <div>
-      <router-link :to="{name: 'node.messaging-socket.register'}">
-      註冊會員
+      <router-link :to="{name: 'node.messaging-socket.login'}">
+      返回
       </router-link>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
+	interface Register{
+		account: string;
+		password: string;
+		name: string;
+	}
+
   interface Token{
     token: string;
   }
@@ -60,33 +77,34 @@ export default{
     const $q = useQuasar()
     const $router = useRouter()
 
-    const account = ref('')
-    const password = ref('')
+		const register = ref<Register>({
+			account: '',
+			password: '',
+			name: ''
+		})
+
     return {
-      account,
-      password,
+			register,
 
       async onSubmit () {
         //login request
-        return await nodeMessagingSocketApi.post<Token>('/api/v1/users/login', {
-          account: account.value,
-          password: password.value,
-        }).then((response) => {
+        return await nodeMessagingSocketApi.post<Token>('/api/v1/users/register', register.value).then((response) => {
           const token = response.data.token
           $q.localStorage.set(nodeMessagingSocketApiUserTokenKey, token)
           $q.notify({
             color: 'green-4',
             textColor: 'white',
             icon: 'cloud_done',
-            message: '登入成功'
+            message: '註冊成功'
           })
           return $router.push({ name: 'node.messaging-socket.index'})
         })
       },
 
       onReset () {
-        account.value = ''
-        password.value = ''
+				register.value.account = ''
+				register.value.password = ''
+				register.value.name = ''
       }
     }
   }
