@@ -7,7 +7,7 @@
           Node Messaging Socket
         </q-toolbar-title>
 
-        <div class="q-pr-auto" v-if="false">
+        <div class="q-pr-auto" v-if="checkLogin">
           <q-btn icon="logout" dense :ripple="false" size="md" unelevated @click="logout"></q-btn>
         </div>
 
@@ -41,7 +41,7 @@ import { ionMdSquareOutline } from '@quasar/extras/ionicons-v4'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
-import { goLanguageRepositoryApi } from 'boot/axios'
+import { nodeMessagingSocketApi, nodeMessagingSocketApiUserTokenKey } from 'boot/axios'
 
 export default {
   name: 'MainLayout',
@@ -60,18 +60,18 @@ export default {
         $q.dark.set(darkMode.value)
       },
       async checkLogin () {
-        const token = $q.localStorage.getItem('go_messaging_socket_user_token')
+        const token = $q.localStorage.getItem(nodeMessagingSocketApiUserTokenKey)
         if(!token){
           return false
         }
-        await goLanguageRepositoryApi.post('api/v1/user/auth').catch(() => {
+        await nodeMessagingSocketApi.post('api/v1/users/auth').catch(() => {
           return true
         })
         return false
       },
       logout () {
-        $q.localStorage.set('go_messaging_socket_user_token', null)
-        return $router.push({ name: 'go.messaging-socket.login'})
+        $q.localStorage.set(nodeMessagingSocketApiUserTokenKey, null)
+        return $router.push({ name: 'node.messaging-socket.login'})
       }
     }
   }
