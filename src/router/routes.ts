@@ -21,6 +21,8 @@ import AdminGoBaseLogin from 'pages/admin/go/base/Login.vue'
 //node-messaging-socket
 import NodeMessagingSocketMainLayout from 'layouts/front/node/messaging-socket/MainLayout.vue'
 import NodeMessagingSocketRegister from 'pages/node/messaging-socket/Register.vue'
+import NodeMessagingSocketRegisterAwaitingVerification from 'pages/node/messaging-socket/RegisterAwaitingVerification.vue'
+import NodeMessagingSocketRegisterEmailValidate from 'src/pages/node/messaging-socket/RegisterEmailValidate.vue'
 import NodeMessagingSocketLogin from 'pages/node/messaging-socket/Login.vue'
 import NodeMessagingSocketIndex from 'pages/node/messaging-socket/Index.vue'
 import NodeMessagingSocketChat from 'pages/node/messaging-socket/Chat.vue'
@@ -61,6 +63,16 @@ const routes: RouteRecordRaw[] = [
         path: 'node/messaging-socket/register',
         name: 'node.messaging-socket.register',
         component: NodeMessagingSocketRegister
+      },
+      {
+        path: 'node/messaging-socket/register/awaiting_verification',
+        name: 'node.messaging-socket.register.awaiting_verification',
+        component: NodeMessagingSocketRegisterAwaitingVerification
+      },
+      {
+        path: 'node/messaging-socket/register/email_validate',
+        name: 'node.messaging-socket.register.email_validate',
+        component: NodeMessagingSocketRegisterEmailValidate
       },
       {
         path: 'node/messaging-socket/login',

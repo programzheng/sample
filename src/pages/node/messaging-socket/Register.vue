@@ -57,55 +57,71 @@
 </template>
 
 <script lang="ts">
-	interface Register{
-		account: string;
-		password: string;
-		name: string;
-	}
+interface Register{
+  account: string;
+  password: string;
+  name: string;
+  validate_url: string;
+}
 
-  interface Token{
-    token: string;
-  }
+interface Token{
+  token: string;
+}
 
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router';
-  import { useQuasar } from 'quasar'
-  import { nodeMessagingSocketApi, nodeMessagingSocketApiUserTokenKey } from 'boot/axios'
+import { ref } from 'vue'
+import { useRouter, NavigationFailure } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { nodeMessagingSocketApi, nodeMessagingSocketApiUserTokenKey } from 'boot/axios'
 
 export default{
   setup () {
     const $q = useQuasar()
     const $router = useRouter()
 
+    const validateUrl = `${window.location.origin}/node/messaging-socket/register/email_validate`;
+
 		const register = ref<Register>({
 			account: '',
 			password: '',
-			name: ''
+			name: '',
+      validate_url: validateUrl,
 		})
+
+    const onSubmit = async () => {
+      //login request
+      return await nodeMessagingSocketApi.post<Token>('/api/v1/users/register', register.value).then((response) => {
+        const token = response.data.token
+
+        return awaitingVerification(token)
+      })
+    }
+
+    const awaitingVerification = (token:string):Promise<void | NavigationFailure | undefined> => {
+      if(process.env.NODE_MESSAGING_SOCKET_USER_THIRD_PARTY_VALIDATION) return $router.push({ name: 'node.messaging-socket.register.awaiting_verification'})
+
+        $q.localStorage.set(nodeMessagingSocketApiUserTokenKey, token)
+        $q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: '註冊成功'
+        })
+
+      return $router.push({ name: 'node.messaging-socket.index'})
+    }
+
+    const onReset = () => {
+      register.value.account = ''
+      register.value.password = ''
+      register.value.name = ''
+    }
 
     return {
 			register,
 
-      async onSubmit () {
-        //login request
-        return await nodeMessagingSocketApi.post<Token>('/api/v1/users/register', register.value).then((response) => {
-          const token = response.data.token
-          $q.localStorage.set(nodeMessagingSocketApiUserTokenKey, token)
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: '註冊成功'
-          })
-          return $router.push({ name: 'node.messaging-socket.index'})
-        })
-      },
-
-      onReset () {
-				register.value.account = ''
-				register.value.password = ''
-				register.value.name = ''
-      }
+      onSubmit,
+      awaitingVerification,
+      onReset
     }
   }
 }
