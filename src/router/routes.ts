@@ -6,17 +6,20 @@ import FrontMainLayout from 'layouts/front/MainLayout.vue'
 import Index from 'pages/Index.vue'
 import JavascriptTimestamp from 'pages/javascript/Timestamp.vue'
 import JavascriptDate from 'pages/javascript/Date.vue'
+
+//go-base
+import GoBaseAdminMainLayout from 'layouts/admin/go/base/MainLayout.vue'
+import GoBaseAdminLogin from 'pages/admin/go/base/Login.vue'
+import GoBaseAdminIndex from 'pages/admin/go/base/Index.vue'
+import GoBaseAdminPost from 'pages/admin/go/base/Post.vue'
+import { goBaseAdminAuth } from './middlewares'
+
 //go-language-repository
 import GoLanguageRepositoryMainLayout from 'layouts/front/go/language-repository/MainLayout.vue'
 import GoLanguageRepositoryLogin from 'pages/go/language-repository/Login.vue'
 import GoLanguageRepositoryIndex from 'pages/go/language-repository/Index.vue'
 import GoLanguageRepositoryDictionary from 'pages/go/language-repository/Dictionary.vue'
 import { goLanguageRepositoryAuth } from './middlewares'
-
-//go-base
-import AdminGoBaseMainLayout from 'layouts/admin/go/base/MainLayout.vue'
-import AdminGoBaseIndex from 'pages/admin/go/base/Index.vue'
-import AdminGoBaseLogin from 'pages/admin/go/base/Login.vue'
 
 //node-messaging-socket
 import NodeMessagingSocketMainLayout from 'layouts/front/node/messaging-socket/MainLayout.vue'
@@ -120,25 +123,33 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
-  //go
-  {
-    path: '/admin/go/base/login',
-    name: 'admin.go.base.login',
-    component: AdminGoBaseLogin
-  },
+  //go base
   {
     path: '/admin/go/base',
-    name: 'admin.go.base',
-    component: AdminGoBaseMainLayout,
-    meta: {
-      // middlewares: [goBaseAdminAuth]
-    },
+    name: 'go.base.admin',
+    component: GoBaseAdminMainLayout,
     children: [
       {
+        path: 'login',
+        name: 'go.base.admin.login',
+        component: GoBaseAdminLogin,
+      },
+      {
         path: '',
-        name: 'admin.go.base.index',
-        component: AdminGoBaseIndex
-      }
+        name: 'go.base.admin.index',
+        component: GoBaseAdminIndex,
+        meta: {
+          middlewares: [goBaseAdminAuth]
+        }
+      },
+      {
+        path: 'post',
+        name: 'go.base.admin.post',
+        component: GoBaseAdminPost,
+        meta: {
+          middlewares: [goBaseAdminAuth]
+        }
+      },
     ]
   },
 

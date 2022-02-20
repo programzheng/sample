@@ -3,7 +3,13 @@ import {
   NavigationGuardNext
 } from 'vue-router';
 import { LocalStorage, Notify } from 'quasar'
-import { goLanguageRepositoryApi, nodeMessagingSocketApi, nodeMessagingSocketApiUserTokenKey } from 'boot/axios'
+import {
+  goBaseAdminApiUserTokenKey,
+  goBaseAdminApi,
+  goLanguageRepositoryApi,
+  nodeMessagingSocketApi,
+  nodeMessagingSocketApiUserTokenKey
+} from 'boot/axios'
 
 function getTokenFailNotify() {
   Notify.create({
@@ -23,8 +29,16 @@ function authFailNextNotify() {
   })
 }
 
-export function laravelBaseAdminAuth (to:RouteLocationNormalized, from:RouteLocationNormalized, next:NavigationGuardNext) {
-	return next({ name: 'admin.php.laravel-base.login' })
+export async function goBaseAdminAuth (to:RouteLocationNormalized, from:RouteLocationNormalized, next:NavigationGuardNext) {
+	const token = LocalStorage.getItem(goBaseAdminApiUserTokenKey)
+  if(!token){
+    return next({ name: 'go.base.admin.login' })
+  }
+  //if jwt error to login page
+  await goBaseAdminApi.post('api/v1/admins/auth').catch(() => {
+    return next({ name: 'go.base.admin.login' })
+  })
+  return next()
 }
 
 export async function goLanguageRepositoryAuth (to:RouteLocationNormalized, from:RouteLocationNormalized, next:NavigationGuardNext) {
@@ -51,4 +65,8 @@ export async function nodeMessagingSocketAuth (to:RouteLocationNormalized, from:
     return next({ name: 'node.messaging-socket.login' })
   })
   return next()
+}
+
+export function laravelBaseAdminAuth (to:RouteLocationNormalized, from:RouteLocationNormalized, next:NavigationGuardNext) {
+	return next({ name: 'admin.php.laravel-base.login' })
 }
