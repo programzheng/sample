@@ -21,6 +21,7 @@
           <q-input
             filled
             v-model="password"
+            type="password"
             label="密碼"
             lazy-rules
             :rules="[
