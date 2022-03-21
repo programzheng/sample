@@ -1,6 +1,8 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    Index
+  <q-page class="row items-center justify-evenly fit">
+    <div class="title-typewriter">
+      programzheng's projects
+    </div>
   </q-page>
 </template>
 
