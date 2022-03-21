@@ -1,5 +1,5 @@
 <template>
-  <q-page class="row items-center justify-evenly">
+  <q-page class="column items-center justify-evenly">
     <q-card>
       <q-card-section>
         登入
@@ -36,26 +36,40 @@
         </q-form>
       </div>
     </q-card>
+    <ThirdPartyAuth
+      :googleOauthClientID="googleOauthClientID"
+      :handleCredentialResponse="handleCredentialResponse"
+    />
   </q-page>
 </template>
 
 <script lang="ts">
-  interface Token{
-    token: string;
-  }
+import ThirdPartyAuth from 'components/ThirdPartyAuth.vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar'
+import { goLanguageRepositoryApi } from 'boot/axios'
 
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router';
-  import { useQuasar } from 'quasar'
-  import { goLanguageRepositoryApi } from 'boot/axios'
+interface Token{
+  token: string;
+}
 
 export default{
+  components: {
+    ThirdPartyAuth
+  },
   setup () {
     const $q = useQuasar()
     const $router = useRouter()
 
     const account = ref('')
     const password = ref('')
+
+    const googleOauthClientID = process.env.GO_LANGUAGE_REPOSITORY_GOOGLE_OAUTH_CLIENT_ID
+    const handleCredentialResponse = (idToken:string) => {
+      console.log(idToken)
+    }
+
     return {
       account,
       password,
@@ -81,7 +95,10 @@ export default{
       onReset () {
         account.value = ''
         password.value = ''
-      }
+      },
+
+      googleOauthClientID,
+      handleCredentialResponse
     }
   }
 }
