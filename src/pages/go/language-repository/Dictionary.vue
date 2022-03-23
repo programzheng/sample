@@ -32,19 +32,19 @@
           <div class="text-h6">英文</div>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="addData.english" autofocus @keyup.enter="addDialog = false" />
+          <q-input dense v-model="addData.english" autofocus v-on:keyup.enter="addRow" />
         </q-card-section>
 
         <q-card-section>
           <div class="text-h6">中文</div>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="addData.chinese" autofocus @keyup.enter="addDialog = false" />
+          <q-input dense v-model="addData.chinese" autofocus v-on:keyup.enter="addRow" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="關閉" v-close-popup />
           <q-btn flat label="新增" v-close-popup @click="addRow" />
+          <q-btn flat label="關閉" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -60,19 +60,19 @@
           <div class="text-h6">英文</div>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="edit.english" autofocus @keyup.enter="editDialog = false" />
+          <q-input dense v-model="edit.english" autofocus v-on:keyup.enter="editRow(edit.id, edit)" />
         </q-card-section>
 
         <q-card-section>
           <div class="text-h6">中文</div>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="edit.chinese" autofocus @keyup.enter="editDialog = false" />
+          <q-input dense v-model="edit.chinese" autofocus v-on:keyup.enter="editRow(edit.id, edit)" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="關閉" v-close-popup />
           <q-btn flat label="編輯" v-close-popup @click="editRow(edit.id, edit)" />
+          <q-btn flat label="關閉" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -159,6 +159,31 @@ export default {
       chinese: ''
     }) as EditData
 
+    const addDialogVisit = () =>{
+      addDialog.value = !addDialog.value
+    }
+
+    const editDialogVisit = () => {
+      if (selected.value.length === 0) {
+        $q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'error',
+          message: '沒有選擇資料'
+        })
+        return
+      }
+      edits.length = 0
+      selected.value.forEach((row: Row) => {
+        edits.push({
+          id: row.ID,
+          english: row.language.english,
+          chinese: row.language.chinese,
+        })
+      })
+      editDialog.value = !editDialog.value
+    }
+
     const setApiData = (data:Row[]) => {
       apiData.results = data
     }
@@ -191,30 +216,9 @@ export default {
           return selected.value.length === 0 ? '' : `${selected.value.length} record${selected.value.length > 1 ? 's' : ''} selected of ${apiData.results.length}`
         },
 
-        addDialogVisit() {
-          addDialog.value = true
-        },
+        addDialogVisit,
 
-        editDialogVisit() {
-          if (selected.value.length === 0) {
-            $q.notify({
-              color: 'red-4',
-              textColor: 'white',
-              icon: 'error',
-              message: '沒有選擇資料'
-            })
-            return
-          }
-          edits.length = 0
-          selected.value.forEach((row: Row) => {
-            edits.push({
-              id: row.ID,
-              english: row.language.english,
-              chinese: row.language.chinese,
-            })
-          })
-          editDialog.value = true
-        },
+        editDialogVisit,
 
         async addRow() {
           return await goLanguageRepositoryApi.post<AddResponse>('api/v1/dictionary', addData).then((response) => {
@@ -227,7 +231,7 @@ export default {
               })
               return getApiData()
             }
-          })
+          }).finally(addDialogVisit)
         },
 
         async editRow(id:number, editData:EditData) {
@@ -241,7 +245,7 @@ export default {
               })
               return getApiData()
             }
-          })
+          }).finally(editDialogVisit)
         },
 
         async removeRow() {
