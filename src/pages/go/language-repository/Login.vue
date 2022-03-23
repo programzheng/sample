@@ -44,6 +44,7 @@
 </template>
 
 <script lang="ts">
+import { GoogleOauthCredential } from 'components/third-party-auths'
 import ThirdPartyAuth from 'components/ThirdPartyAuth.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
@@ -66,8 +67,20 @@ export default{
     const password = ref('')
 
     const googleOauthClientID = process.env.GO_LANGUAGE_REPOSITORY_GOOGLE_OAUTH_CLIENT_ID
-    const handleCredentialResponse = (idToken:string) => {
-      console.log(idToken)
+    const handleCredentialResponse = async (credential:GoogleOauthCredential) => {
+        return await goLanguageRepositoryApi.post<Token>('/api/v1/user/google/oauth', {
+          id_token: credential.credential,
+        }).then((response) => {
+          const token = response.data.token
+          $q.localStorage.set('go_language_repository_user_token', token)
+          $q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: '登入成功'
+          })
+          return $router.push({ name: 'go.language-repository.index'})
+        })
     }
 
     return {
