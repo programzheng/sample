@@ -22,9 +22,7 @@ export default defineComponent({
   name: 'ThirdPartyAuth',
   props: {
     googleOauthClientID: String,
-    handleCredentialResponse: null,
-    Api: null,
-    LoginApi: String,
+    handleCredentialResponse: Function
   },
   setup(props) {
 
@@ -35,7 +33,7 @@ export default defineComponent({
       document.head.appendChild(gsiScript)
       window.handleCredentialResponse = props.handleCredentialResponse as (idToken:string) => void
     })
-    
+
     return {
     }
   }
