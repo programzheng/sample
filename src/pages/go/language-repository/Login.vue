@@ -37,6 +37,7 @@
       </div>
     </q-card>
     <ThirdPartyAuth
+      v-if="googleOauthClientID"
       :googleOauthClientID="googleOauthClientID"
       :handleCredentialResponse="handleCredentialResponse"
     />
