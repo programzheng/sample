@@ -74,6 +74,12 @@ const linksList = [
         caption: 'timestamp',
         icon: 'timer',
         link: '/javascript/timestamp'
+      },
+      {
+        title: 'date',
+        caption: 'date',
+        icon: 'calendar_today',
+        link: '/javascript/date'
       }
     ]
   },
