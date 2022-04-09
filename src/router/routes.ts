@@ -6,6 +6,7 @@ import FrontMainLayout from 'layouts/front/MainLayout.vue'
 import Index from 'pages/Index.vue'
 import JavascriptTimestamp from 'pages/javascript/Timestamp.vue'
 import JavascriptDate from 'pages/javascript/Date.vue'
+import JavascriptJsontodotenv from 'pages/javascript/Jsontodotenv.vue'
 
 //go-base
 import GoBaseAdminMainLayout from 'layouts/admin/go/base/MainLayout.vue'
@@ -55,6 +56,11 @@ const routes: RouteRecordRaw[] = [
         path: 'javascript/date',
         name: 'javascript.date',
         component: JavascriptDate
+      },
+      {
+        path: 'javascript/jsontodotenv',
+        name: 'javascript.jsontodotenv',
+        component: JavascriptJsontodotenv
       },
       {
         path: 'go/language-repository/login',
@@ -174,7 +180,7 @@ const routes: RouteRecordRaw[] = [
       }
     ]
   },
-  
+
   // Always leave this as last one,
   // but you can also remove it
   {
