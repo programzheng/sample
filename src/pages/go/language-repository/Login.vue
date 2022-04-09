@@ -23,7 +23,6 @@ import { Token } from 'components/login-form'
 import { GoogleOauthCredential } from 'components/third-party-auths'
 import LoginForm from 'components/LoginForm.vue'
 import ThirdPartyAuth from 'components/ThirdPartyAuth.vue'
-import { Ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
 import { goLanguageRepositoryApi } from 'boot/axios'
@@ -37,11 +36,11 @@ export default{
     const $q = useQuasar()
     const $router = useRouter()
 
-    const onSubmit = async (account:Ref<string>, password:Ref<string>) => {
+    const onSubmit = async (account:string, password:string) => {
       //login request
       return await goLanguageRepositoryApi.post<Token>('/api/v1/user/login', {
-        account: account.value,
-        password: password.value,
+        account: account,
+        password: password,
       }).then((response) => {
         const token = response.data.token
         $q.localStorage.set('go_language_repository_user_token', token)
