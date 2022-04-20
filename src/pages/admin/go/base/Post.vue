@@ -7,72 +7,25 @@
         :editRowButtonDisabled="editRowButtondisabled"
         :removeRowButtonDisabled="removeRowButtonDisabled"
       />
-      <q-table
-        title="Post"
-        :rows="apiData.results"
+      <ApiTable
+        :title="'Post'"
+        :getApiData="getApiData"
+        :rowKey="'id'"
         :columns="columns"
-        row-key="id"
-        :selected-rows-label="getSelected"
-        selection="multiple"
-        v-model:selected="selected"
-        v-model:pagination="pagination"
-        :loading="loading"
-        :filter="filter"
-        @request="onRequest"
-        binary-state-sort
-      >
-        <template v-slot:top>
-          <q-input dense debounce="300" color="primary" v-model="filter">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
-        <div class="row justify-center q-mt-md">
-          <q-pagination
-            v-model="pagination.page"
-            color="grey-8"
-            :max="pagesNumber"
-            size="sm"
-          />
-        </div>
-      </q-table>
+        :ref="el => { table = el }"
+      />
   </div>
 </template>
 
 <script lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import ActionBar from 'components/ActionBar.vue'
 import AddRowDialog from 'src/components/AddRowDialog.vue'
 import EditRowDialog from 'src/components/EditRowDialog.vue'
+import ApiTable from 'src/components/ApiTable.vue'
+import { Response } from 'src/components/api'
 import { useQuasar } from 'quasar'
 import { goBaseAdminApi } from 'boot/axios'
-interface Pagination {
-  sortBy: string,
-  descending: boolean,
-  page: number,
-  rowsPerPage: number,
-  rowsNumber: number
-}
-
-interface Props{
-  pagination: Pagination,
-  filter: string|undefined
-}
-
-interface Response {
-  code: number,
-  value: ResponseValue
-}
-
-interface ResponseValue {
-  list:Row[],
-  page:{
-    page_num: number,
-    page_size: number,
-  },
-  total: number,
-}
 
 interface Row {
 	id: number;
@@ -125,59 +78,11 @@ const units = [
 
 export default {
   components: {
-    ActionBar
+    ActionBar,
+    ApiTable
   },
   setup () {
     const $q = useQuasar()
-    let apiData = reactive({
-      results: [] as Row[],
-      total: 0
-    })
-    const loading = ref(false)
-    const filter = ref('')
-    const pagination = ref({
-      sortBy: 'desc',
-      descending: false,
-      page: 1,
-      rowsPerPage: 5,
-      rowsNumber: 0
-    })
-
-    const selected = ref([])
-
-    function getRowsNumberCount () {
-      return apiData.total
-    }
-
-    const onRequest = async (props:Props):Promise<void> => {
-      const { page, rowsPerPage, sortBy, descending } = props.pagination
-      const filter = props.filter
-
-      loading.value = true
-
-      // get all rows if "All" (0) is selected
-      const fetchCount = rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage
-
-      // fetch data from "server"
-      await getApiData(page, fetchCount, filter, sortBy, descending)
-
-      // update rowsCount with appropriate value
-      pagination.value.rowsNumber = getRowsNumberCount()
-
-      // don't forget to update local pagination object
-      pagination.value.page = page
-      pagination.value.rowsPerPage = rowsPerPage
-      pagination.value.sortBy = sortBy
-      pagination.value.descending = descending
-
-      // ...and turn of loading indicator
-      loading.value = false
-    }
-
-    const setApiData = (value:ResponseValue) => {
-      apiData.results = value.list
-      apiData.total = value.total
-    }
 
     const getApiData = async (
       page: number,
@@ -205,13 +110,17 @@ export default {
               )
           data.value.list.sort(sortFn)
         }
-        setApiData(data.value)
+        return data
       })
     }
 
-    const getSelected = () => {
-      return selected.value.length === 0 ? '' : `${selected.value.length} record${selected.value.length > 1 ? 's' : ''} selected of ${apiData.results.length}`
-    }
+    const table = ref(null)
+    const selected = computed(() => {
+      if(table.value && table.value['selected']){
+        return table.value['selected']
+      }
+      return []
+    })
 
     const addRowButtondisabled = ref(false)
     const addRowClick = () => {
@@ -270,27 +179,8 @@ export default {
       return selected.value.length ? false : true
     })
 
-    let pagesNumber = computed(() => {
-      return Math.ceil(apiData.total / pagination.value.rowsPerPage)
-    })
-
-    onMounted(async () => {
-      await onRequest({
-        pagination: pagination.value,
-        filter: undefined
-      })
-      pagesNumber = computed(() => {
-        return Math.ceil(apiData.total / pagination.value.rowsPerPage)
-      })
-    })
-
     return {
         columns,
-        filter,
-        loading,
-        pagination,
-        pagesNumber,
-        onRequest,
         selected,
         units,
         addRowButtondisabled,
@@ -299,11 +189,9 @@ export default {
         editRowClick,
         removeRowButtonDisabled,
 
-        apiData,
-        setApiData,
         getApiData,
 
-        getSelected
+        table
     }
   }
 }
