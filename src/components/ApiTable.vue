@@ -43,10 +43,9 @@ export default defineComponent({
     rowKey: String,
     columns: Array
   },
-  emits: ['get-selected'],
   setup(props) {
     const loading = ref(false)
-    const filter = ref('123')
+    const filter = ref('')
     const apiData = reactive({
       results: [],
       page: {
@@ -65,9 +64,7 @@ export default defineComponent({
     const selected = ref([])
 
     const { getApiData } = toRefs(props)
-    console.log(getApiData.value)
     const setApiData = (value:ResponseValue) => {
-      console.log(value)
       apiData.results = value.list
       apiData.total = value.total
     }
@@ -87,9 +84,7 @@ export default defineComponent({
 
       // fetch data from "server"
       if(getApiData.value){
-        console.log(await getApiData.value(page, fetchCount, filter, sortBy, descending))
         const { value } = await getApiData.value(page, fetchCount, filter, sortBy, descending) as Response
-        console.log(value)
         setApiData(value)
       }
 
@@ -109,10 +104,6 @@ export default defineComponent({
     const getSelectedLabel = () => {
       return selected.value.length === 0 ? '' : `${selected.value.length} record${selected.value.length > 1 ? 's' : ''} selected of ${apiData.results.length}`
     }
-
-    // const toParentGetSelected = () => {
-    //   ctx.emit('get-selected', selected)
-    // }
 
     const pagesNumber = computed(() => {
       return Math.ceil(apiData.total / pagination.value.rowsPerPage)
@@ -135,8 +126,6 @@ export default defineComponent({
 
       onRequest,
       getSelectedLabel,
-
-      // toParentGetSelected
     }
   },
 })
