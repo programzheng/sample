@@ -2,7 +2,7 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section>
-        <div class="text-center text-h5">EDIT</div>
+        <div class="text-center text-h5">REMOVE</div>
       </q-card-section>
 
       <template v-for="(unitsRequest, unitsRequestKey) in unitsRequests" :key="unitsRequestKey">
@@ -17,7 +17,7 @@
                 <div class="text-h6">{{unit.label}}</div>
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input dense v-model="unitsRequest[unit.name]" />
+                {{unitsRequest[unit.name]}}
               </q-card-section>
             </div>
           </template>
@@ -35,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
-import { Unit } from 'src/components/edit-row-dialog'
+import { Unit } from 'src/components/remove-row-dialog'
 
 export default defineComponent({
   props: {

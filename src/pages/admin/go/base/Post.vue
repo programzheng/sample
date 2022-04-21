@@ -3,14 +3,15 @@
       <ActionBar
         :addRowButtondisabled="addRowButtondisabled"
         :addRowClick="addRowClick"
-        :editRowClick="editRowClick"
         :editRowButtonDisabled="editRowButtondisabled"
+        :editRowClick="editRowClick"
         :removeRowButtonDisabled="removeRowButtonDisabled"
+        :removeRowClick="removeRowClick"
       />
       <ApiTable
         :title="'Post'"
         :getApiData="getApiData"
-        :rowKey="'id'"
+        :rowKey="rowKey"
         :columns="columns"
         :ref="el => { table = el }"
       />
@@ -22,6 +23,7 @@ import { ref, computed } from 'vue'
 import ActionBar from 'components/ActionBar.vue'
 import AddRowDialog from 'src/components/AddRowDialog.vue'
 import EditRowDialog from 'src/components/EditRowDialog.vue'
+import RemoveRowDialog from 'src/components/RemoveRowDialog.vue'
 import ApiTable from 'src/components/ApiTable.vue'
 import { Response } from 'src/components/api'
 import { useQuasar } from 'quasar'
@@ -35,47 +37,6 @@ interface Row {
   files: string[];
 }
 
-interface Request {
-  title: string;
-  summary: string;
-}
-
-const columns = [
-  {
-    name: 'id',
-    required: true,
-    label: 'id',
-    align: 'left',
-    field: (row:Row) => row.id,
-    format: (val:string) => `${val}`,
-    sortable: true
-  },
-  { name: 'title', align: 'left', label: '標題', field: (row:Row) => row.title, sortable: true },
-  { name: 'summary', align: 'left', label: '簡介', field: (row:Row) => row.summary, sortable: true },
-  { name: 'detail', align: 'left', label: '內容', field: (row:Row) => row.detail, sortable: true },
-  { name: 'created_at', align: 'left', label: '建立時間', field: 'created_at', sortable: true },
-  { name: 'updated_at', align: 'left', label: '更新時間', field: 'updated_at', sortable: true },
-  { name: 'deleted_at', align: 'left', label: '刪除時間', field: 'deleted_at', sortable: true },
-]
-
-const units = [
-  {
-    type: 'input',
-    label: '標題',
-    name: 'title'
-  },
-  {
-    type: 'input',
-    label: '簡介',
-    name: 'summary'
-  },
-  {
-    type: 'input',
-    label: '內容',
-    name: 'detail'
-  }
-]
-
 export default {
   components: {
     ActionBar,
@@ -83,6 +44,41 @@ export default {
   },
   setup () {
     const $q = useQuasar()
+    const rowKey = 'id'
+    const columns = [
+      {
+        name: 'id',
+        required: true,
+        label: 'id',
+        align: 'left',
+        field: (row:Row) => row.id,
+        format: (val:string) => `${val}`,
+        sortable: true
+      },
+      { name: 'title', align: 'left', label: '標題', field: (row:Row) => row.title, sortable: true },
+      { name: 'summary', align: 'left', label: '簡介', field: (row:Row) => row.summary, sortable: true },
+      { name: 'detail', align: 'left', label: '內容', field: (row:Row) => row.detail, sortable: true },
+      { name: 'created_at', align: 'left', label: '建立時間', field: 'created_at', sortable: true },
+      { name: 'updated_at', align: 'left', label: '更新時間', field: 'updated_at', sortable: true },
+      { name: 'deleted_at', align: 'left', label: '刪除時間', field: 'deleted_at', sortable: true },
+    ]
+    const units = [
+      {
+        type: 'input',
+        label: '標題',
+        name: 'title'
+      },
+      {
+        type: 'input',
+        label: '簡介',
+        name: 'summary'
+      },
+      {
+        type: 'input',
+        label: '內容',
+        name: 'detail'
+      }
+    ]
 
     const getApiData = async (
       page: number,
@@ -127,9 +123,10 @@ export default {
       $q.dialog({
         component: AddRowDialog,
         componentProps: {
+          rowKey: rowKey,
           units: units,
         }
-      }).onOk((unitsRequest:Request) => {
+      }).onOk((unitsRequest:Row) => {
           void (async () => {
             await goBaseAdminApi.post<Response>('api/v1/posts', unitsRequest).then((response) => {
               if(response.data.code === 200){
@@ -139,10 +136,9 @@ export default {
                   icon: 'cloud_done',
                   message: '新增成功'
                 })
-                return getApiData(0,5,undefined,'id', false)
               }
             })
-
+            return getApiData(0,5,undefined,'id', false)
           })()
       })
     }
@@ -154,23 +150,25 @@ export default {
       $q.dialog({
         component: EditRowDialog,
         componentProps: {
+          rowKey: rowKey,
           units: units,
           selected: selected.value as Row[]
         }
-      }).onOk((unitsRequest:Request) => {
+      }).onOk((unitsRequests:Row[]) => {
           void (async () => {
-            await goBaseAdminApi.put<Response>('api/v1/posts', unitsRequest).then((response) => {
-              if(response.data.code === 200){
-                $q.notify({
-                  color: 'green-4',
-                  textColor: 'white',
-                  icon: 'cloud_done',
-                  message: '新增成功'
-                })
-                return getApiData(0,5,undefined,'id', false)
-              }
-            })
-
+            for(const unitsRequest of unitsRequests){
+              await goBaseAdminApi.put<Response>(`api/v1/posts/${unitsRequest[rowKey]}`, unitsRequest).then((response) => {
+                if(response.data.code === 200){
+                  $q.notify({
+                    color: 'green-4',
+                    textColor: 'white',
+                    icon: 'cloud_done',
+                    message: '編輯成功'
+                  })
+                }
+              })
+            }
+            return getApiData(0,5,undefined,'id', false)
           })()
       })
     }
@@ -178,8 +176,35 @@ export default {
     const removeRowButtonDisabled = computed(() => {
       return selected.value.length ? false : true
     })
+    const removeRowClick = () => {
+      $q.dialog({
+        component: RemoveRowDialog,
+        componentProps: {
+          rowKey: rowKey,
+          units: units,
+          selected: selected.value as Row[]
+        }
+      }).onOk((unitsRequests:Row[]) => {
+          void (async () => {
+            for(const unitsRequest of unitsRequests){
+              await goBaseAdminApi.delete<Response>(`api/v1/posts/${unitsRequest[rowKey]}`).then((response) => {
+                if(response.data.code === 200){
+                  $q.notify({
+                    color: 'green-4',
+                    textColor: 'white',
+                    icon: 'cloud_done',
+                    message: '刪除成功'
+                  })
+                }
+              })
+            }
+            return getApiData(0,5,undefined,'id', false)
+          })()
+      })
+    }
 
     return {
+        rowKey,
         columns,
         selected,
         units,
@@ -188,6 +213,7 @@ export default {
         editRowButtondisabled,
         editRowClick,
         removeRowButtonDisabled,
+        removeRowClick,
 
         getApiData,
 

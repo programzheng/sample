@@ -3,7 +3,7 @@
     :title="title"
     :rows="apiData.results"
     :columns="columns"
-    row-key="id"
+    :row-key="rowKey"
     :selected-rows-label="getSelectedLabel"
     selection="multiple"
     v-model:selected="selected"

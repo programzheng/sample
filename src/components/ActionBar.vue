@@ -6,7 +6,7 @@
     <div class="col-6 row justify-end">
       <q-btn class="q-ml-sm" color="primary" label="Add row" :disable="addRowButtonDisabled" @click="addRowClick" />
       <q-btn class="q-ml-sm" color="amber" label="Edit row" :disable="editRowButtonDisabled" @click="editRowClick" />
-      <q-btn class="q-ml-sm" color="red" label="Remove row" :disable="removeRowButtonDisabled" />
+      <q-btn class="q-ml-sm" color="red" label="Remove row" :disable="removeRowButtonDisabled" @click="removeRowClick" />
     </div>
   </div>
 </template>
@@ -20,7 +20,8 @@ export default defineComponent({
     addRowClick: Function,
     editRowButtonDisabled: Boolean,
     editRowClick: Function,
-    removeRowButtonDisabled: Boolean
+    removeRowButtonDisabled: Boolean,
+    removeRowClick: Function,
   },
   setup () {
     console.log('action bar setup')

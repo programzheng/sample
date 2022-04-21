@@ -1,6 +1,9 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <q-card class="q-dialog-plugin" style="min-width: 350px">
+    <q-card class="q-dialog-plugin">
+      <q-card-section>
+        <div class="text-center text-h5">ADD</div>
+      </q-card-section>
 
       <template v-for="(unit, unitKey) in units" :key="unitKey">
         <div v-if="unit.type === 'input'">
