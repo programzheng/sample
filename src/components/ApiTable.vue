@@ -33,13 +33,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, toRefs, reactive, computed } from 'vue'
-import { Response, ResponseValue } from 'src/components/api'
+import { Response } from 'src/components/api'
 import { OnRequestProps } from 'src/components/api-table'
 
 export default defineComponent({
   props: {
     title: String,
     getApiData: Function,
+    setApiData: Function,
     rowKey: String,
     columns: Array
   },
@@ -48,10 +49,6 @@ export default defineComponent({
     const filter = ref('')
     const apiData = reactive({
       results: [],
-      page: {
-        page_num: 1,
-        page_size: 5
-      },
       total: 0
     })
     const pagination = ref({
@@ -63,11 +60,7 @@ export default defineComponent({
     })
     const selected = ref([])
 
-    const { getApiData } = toRefs(props)
-    const setApiData = (value:ResponseValue) => {
-      apiData.results = value.list
-      apiData.total = value.total
-    }
+    const { getApiData, setApiData } = toRefs(props)
 
     const getRowsNumberCount = () => {
       return apiData.total
@@ -85,7 +78,7 @@ export default defineComponent({
       // fetch data from "server"
       if(getApiData.value){
         const { value } = await getApiData.value(page, fetchCount, filter, sortBy, descending) as Response
-        setApiData(value)
+        if(setApiData.value) setApiData.value(apiData, value)
       }
 
       // update rowsCount with appropriate value

@@ -11,6 +11,7 @@
       <ApiTable
         :title="'Post'"
         :getApiData="getApiData"
+        :setApiData="setApiData"
         :rowKey="rowKey"
         :columns="columns"
         :ref="el => { table = el }"
@@ -25,7 +26,7 @@ import AddRowDialog from 'src/components/AddRowDialog.vue'
 import EditRowDialog from 'src/components/EditRowDialog.vue'
 import RemoveRowDialog from 'src/components/RemoveRowDialog.vue'
 import ApiTable from 'src/components/ApiTable.vue'
-import { Response } from 'src/components/api'
+import { ApiData, Response, ResponseValue } from 'src/components/api'
 import { useQuasar } from 'quasar'
 import { goBaseAdminApi } from 'boot/axios'
 
@@ -80,6 +81,13 @@ export default {
       }
     ]
 
+    const apiData = computed(() => {
+      if(table.value && table.value['apiData']){
+        return table.value['apiData']
+      }
+      return {} as ApiData
+    })
+
     const getApiData = async (
       page: number,
       fetchCount: number,
@@ -110,7 +118,13 @@ export default {
       })
     }
 
+    const setApiData = (apiData:ApiData, value:ResponseValue) => {
+      apiData.results = value.list
+      apiData.total = value.total
+    }
+
     const table = ref(null)
+
     const selected = computed(() => {
       if(table.value && table.value['selected']){
         return table.value['selected']
@@ -138,7 +152,8 @@ export default {
                 })
               }
             })
-            return getApiData(0,5,undefined,'id', false)
+            const { value } = await getApiData(0,5,undefined,'id', false)
+            setApiData(apiData.value, value)
           })()
       })
     }
@@ -168,7 +183,8 @@ export default {
                 }
               })
             }
-            return getApiData(0,5,undefined,'id', false)
+            const { value } = await getApiData(0,5,undefined,'id', false)
+            setApiData(apiData.value, value)
           })()
       })
     }
@@ -198,7 +214,8 @@ export default {
                 }
               })
             }
-            return getApiData(0,5,undefined,'id', false)
+            const { value } = await getApiData(0,5,undefined,'id', false)
+            setApiData(apiData.value, value)
           })()
       })
     }
@@ -216,6 +233,7 @@ export default {
         removeRowClick,
 
         getApiData,
+        setApiData,
 
         table
     }

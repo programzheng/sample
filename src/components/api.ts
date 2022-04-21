@@ -1,3 +1,8 @@
+export interface ApiData {
+  results: Array<[]>,
+  total: number,
+}
+
 export interface Response {
   code: number,
   value: ResponseValue
