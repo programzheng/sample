@@ -20,13 +20,14 @@
 </template>
 
 <script lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import ActionBar from 'components/ActionBar.vue'
 import AddRowDialog from 'src/components/AddRowDialog.vue'
 import EditRowDialog from 'src/components/EditRowDialog.vue'
 import RemoveRowDialog from 'src/components/RemoveRowDialog.vue'
 import ApiTable from 'src/components/ApiTable.vue'
 import { ApiData, Response, ResponseValue } from 'src/components/api'
+import { Pagination, OnRequest } from 'src/components/api-table'
 import { useQuasar } from 'quasar'
 import { goBaseAdminApi } from 'boot/axios'
 
@@ -81,12 +82,12 @@ export default {
       }
     ]
 
-    const apiData = computed(() => {
-      if(table.value && table.value['apiData']){
-        return table.value['apiData']
-      }
-      return {} as ApiData
-    })
+    // const apiData = computed(() => {
+    //   if(table.value && table.value['apiData']){
+    //     return table.value['apiData']
+    //   }
+    //   return {} as ApiData
+    // })
 
     const getApiData = async (
       page: number,
@@ -124,8 +125,14 @@ export default {
     }
 
     const table = ref(null)
-
-    const selected = computed(() => {
+    const pagination = computed(() => {
+      if(table.value && table.value['pagination']){
+        return table.value['pagination'] as Pagination
+      }
+      return {} as Pagination
+    })
+    const onRequest = ref<OnRequest>()
+    const selected = computed<Row[]>(() => {
       if(table.value && table.value['selected']){
         return table.value['selected']
       }
@@ -152,8 +159,12 @@ export default {
                 })
               }
             })
-            const { value } = await getApiData(0,5,undefined,'id', false)
-            setApiData(apiData.value, value)
+            if(onRequest.value){
+              await onRequest.value({
+                pagination: pagination.value,
+                filter:undefined
+              })
+            }
           })()
       })
     }
@@ -167,11 +178,11 @@ export default {
         componentProps: {
           rowKey: rowKey,
           units: units,
-          selected: selected.value as Row[]
+          selected: selected.value
         }
       }).onOk((unitsRequests:Row[]) => {
           void (async () => {
-            for(const unitsRequest of unitsRequests){
+            for(let unitsRequest of unitsRequests){
               await goBaseAdminApi.put<Response>(`api/v1/posts/${unitsRequest[rowKey]}`, unitsRequest).then((response) => {
                 if(response.data.code === 200){
                   $q.notify({
@@ -183,8 +194,12 @@ export default {
                 }
               })
             }
-            const { value } = await getApiData(0,5,undefined,'id', false)
-            setApiData(apiData.value, value)
+            if(onRequest.value){
+              await onRequest.value({
+                pagination: pagination.value,
+                filter:undefined
+              })
+            }
           })()
       })
     }
@@ -198,27 +213,44 @@ export default {
         componentProps: {
           rowKey: rowKey,
           units: units,
-          selected: selected.value as Row[]
+          selected: selected.value
         }
       }).onOk((unitsRequests:Row[]) => {
           void (async () => {
-            for(const unitsRequest of unitsRequests){
-              await goBaseAdminApi.delete<Response>(`api/v1/posts/${unitsRequest[rowKey]}`).then((response) => {
-                if(response.data.code === 200){
+            //because splice trigger reset index so use while
+            let i = unitsRequests.length
+            while (i--) {
+              const unitsRequest = unitsRequests[i]
+              await goBaseAdminApi.delete<Response>(`api/v1/posts/${unitsRequest[rowKey]}`).then(() => {
                   $q.notify({
                     color: 'green-4',
                     textColor: 'white',
                     icon: 'cloud_done',
                     message: '刪除成功'
                   })
-                }
+                  const index = selected.value.findIndex(el => el.id === unitsRequest.id)
+                  if (index > -1) {
+                    selected.value.splice(index, 1);
+                  }
               })
             }
-            const { value } = await getApiData(0,5,undefined,'id', false)
-            setApiData(apiData.value, value)
+            if(onRequest.value){
+              await onRequest.value({
+                pagination: pagination.value,
+                filter:undefined
+              })
+            }
           })()
       })
     }
+
+    onMounted(() => {
+      onRequest.value = (() => {
+        if(table.value && table.value['onRequest']) {
+          return table.value['onRequest'] as OnRequest
+        }
+      })()
+    })
 
     return {
         rowKey,
