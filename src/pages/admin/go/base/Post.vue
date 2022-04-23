@@ -31,12 +31,18 @@ import { Pagination, OnRequest } from 'src/components/api-table'
 import { useQuasar } from 'quasar'
 import { goBaseAdminApi } from 'boot/axios'
 
+interface File {
+  hash_id: string;
+  type: string;
+  value: string;
+}
+
 interface Row {
 	id: number;
   title: string;
   summary: string;
   detail: string;
-  files: string[];
+  files: File[];
 }
 
 export default {
@@ -60,6 +66,7 @@ export default {
       { name: 'title', align: 'left', label: '標題', field: (row:Row) => row.title, sortable: true },
       { name: 'summary', align: 'left', label: '簡介', field: (row:Row) => row.summary, sortable: true },
       { name: 'detail', align: 'left', label: '內容', field: (row:Row) => row.detail, sortable: true },
+      { name: 'file', align: 'left', label: '圖片', field: (row:Row) => row.files, sortable: true },
       { name: 'created_at', align: 'left', label: '建立時間', field: 'created_at', sortable: true },
       { name: 'updated_at', align: 'left', label: '更新時間', field: 'updated_at', sortable: true },
       { name: 'deleted_at', align: 'left', label: '刪除時間', field: 'deleted_at', sortable: true },

@@ -20,6 +20,11 @@
         </template>
       </q-input>
     </template>
+    <template v-slot:body-cell-file="props">
+      <q-td :props="props">
+        <q-img :src="props.row.files.find(x=>x!==undefined)?.value"></q-img>
+      </q-td>
+    </template>
     <div class="row justify-center q-mt-md">
       <q-pagination
         v-model="pagination.page"
