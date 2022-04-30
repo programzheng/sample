@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import ActionBar from 'components/ActionBar.vue'
 import AddRowDialog from 'src/components/AddRowDialog.vue'
 import EditRowDialog from 'src/components/EditRowDialog.vue'
@@ -45,7 +45,7 @@ interface Row {
   files: File[];
 }
 
-export default {
+export default defineComponent({
   components: {
     ActionBar,
     ApiTable
@@ -86,6 +86,11 @@ export default {
         type: 'input',
         label: '內容',
         name: 'detail'
+      },
+      {
+        type: 'base64_files',
+        label: '圖片',
+        name: 'files'
       }
     ]
 
@@ -146,6 +151,7 @@ export default {
       return []
     })
 
+
     const addRowButtondisabled = ref(false)
     const addRowClick = () => {
       $q.dialog({
@@ -155,24 +161,24 @@ export default {
           units: units,
         }
       }).onOk((unitsRequest:Row) => {
-          void (async () => {
-            await goBaseAdminApi.post<Response>('api/v1/posts', unitsRequest).then((response) => {
-              if(response.data.code === 200){
-                $q.notify({
-                  color: 'green-4',
-                  textColor: 'white',
-                  icon: 'cloud_done',
-                  message: '新增成功'
-                })
-              }
-            })
-            if(onRequest.value){
-              await onRequest.value({
-                pagination: pagination.value,
-                filter:undefined
+        void (async () => {
+          await goBaseAdminApi.post<Response>('api/v1/posts', unitsRequest).then((response) => {
+            if(response.data.code === 200){
+              $q.notify({
+                color: 'green-4',
+                textColor: 'white',
+                icon: 'cloud_done',
+                message: '新增成功'
               })
             }
-          })()
+          })
+          if(onRequest.value){
+            await onRequest.value({
+              pagination: pagination.value,
+              filter:undefined
+            })
+          }
+        })()
       })
     }
 
@@ -277,5 +283,5 @@ export default {
         table
     }
   }
-}
+})
 </script>
