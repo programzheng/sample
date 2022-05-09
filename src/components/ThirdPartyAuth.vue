@@ -1,10 +1,20 @@
 <template>
     <div class="q-pa-md">
-      <div id="g_id_onload"
-          :data-client_id="googleOauthClientID"
-          data-callback="handleCredentialResponse">
+      <div class="q-pa-md">
+        <div id="g_id_onload"
+            :data-client_id="googleOauthClientID"
+            data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
       </div>
-      <div class="g_id_signin" data-type="standard"></div>
+      <!-- twitter oauth 1.0 -->
+      <!-- <div>
+        <q-btn class="q-ml-sm" color="primary" label="Twitter Login" @click="twitterOauth10Login" />
+      </div> -->
+      <!-- twitter oauth 2.0 -->
+      <div class="q-pa-md">
+        <q-img src="~assets/sign-in-with-twitter-gray.png.twimg.2560.png" style="cursor:pointer;" @click="twitterOauth20Login"></q-img>
+      </div>
     </div>
 </template>
 
@@ -17,12 +27,13 @@ declare global {
     }
 }
 
-
 export default defineComponent({
   name: 'ThirdPartyAuth',
   props: {
     googleOauthClientID: String,
-    handleCredentialResponse: Function
+    handleCredentialResponse: Function,
+    twitterOauth10Login: Function,
+    twitterOauth20Login: Function,
   },
   setup(props) {
 

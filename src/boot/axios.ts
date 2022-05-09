@@ -36,7 +36,7 @@ goBaseAdminApi.interceptors.request.use((config: AxiosRequestConfig) => {
     Authorization: authorization,
   }
 
-  return config  
+  return config
 }, (error) => {
   return Promise.reject(error);
 })
@@ -86,7 +86,7 @@ goLanguageRepositoryApi.interceptors.request.use((config: AxiosRequestConfig) =>
     Authorization: authorization,
   }
 
-  return config  
+  return config
 }, (error) => {
   return Promise.reject(error);
 })
@@ -136,7 +136,7 @@ nodeMessagingSocketApi.interceptors.request.use((config: AxiosRequestConfig) => 
     Authorization: authorization,
   }
 
-  return config  
+  return config
 }, (error) => {
   return Promise.reject(error);
 })
@@ -190,5 +190,5 @@ export {
   goLanguageRepositoryApi,
   goLanguageRepositoryUserTokenKey,
   nodeMessagingSocketApi,
-  nodeMessagingSocketApiUserTokenKey
+  nodeMessagingSocketApiUserTokenKey,
 };
