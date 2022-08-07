@@ -7,6 +7,7 @@ import Index from 'pages/Index.vue'
 import JavascriptTimestamp from 'pages/javascript/Timestamp.vue'
 import JavascriptDate from 'pages/javascript/Date.vue'
 import JavascriptJsontodotenv from 'pages/javascript/Jsontodotenv.vue'
+import Portfolio from 'pages/Portfolio.vue'
 
 //go-base
 import GoBaseAdminMainLayout from 'layouts/admin/go/base/MainLayout.vue'
@@ -46,6 +47,11 @@ const routes: RouteRecordRaw[] = [
         path: '',
         name: 'index',
         component: Index
+      },
+      {
+        path: 'portfolio',
+        name: 'portfolio',
+        component: Portfolio,
       },
       {
         path: 'javascript/timestamp',
