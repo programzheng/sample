@@ -163,9 +163,6 @@
                 <q-badge color="grey-14">GRPC</q-badge>
               </div>
               <div class="q-pr-xs">
-                <q-badge color="grey-14">Gorm</q-badge>
-              </div>
-              <div class="q-pr-xs">
                 <q-badge color="grey-14">ＭySQL</q-badge>
               </div>
               <div class="q-pr-xs">
