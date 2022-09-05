@@ -67,7 +67,7 @@
           <div class="text-overline text-green-9">Summary</div>
           <div class="text-h5 q-mt-sm q-mb-xs text-bold">PTT自定義看板取得文章內文圖片</div>
           <div class="text-body1">
-            藉由把PTT看板名稱帶到網址上的parameter，取得指定看板內隨機文章內的隨機一張圖片或是取得指定看板一定數量的文章內的所有圖片轉為JSON檔案。運用無服務器架構，部署於AWS的Lambda。
+            藉由把PTT看板名稱帶到網址上的parameter，取得指定看板內隨機文章內的隨機一張圖片或是取得指定看板一定數量的文章內的所有圖片轉為JSON檔案。採用serverless，部署於AWS的Lambda。
           </div>
         </div>
       </div>
