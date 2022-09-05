@@ -24,6 +24,63 @@
 
           <q-card-section class="q-pb-none">
             <div class="text-overline text-blue-6">Golang</div>
+            <div class="text-h5 text-bold q-mt-sm q-mb-xs">go-ptt-crawler</div>
+            <div class="row q-mt-sm items-start justify-start">
+              <div class="q-pr-xs">
+                <q-badge color="grey-14">Gin</q-badge>
+              </div>
+              <div class="q-pr-xs">
+                <q-badge color="grey-14">Colly</q-badge>
+              </div>
+              <div class="q-pr-xs">
+                <q-badge color="grey-14">AWS Lambda</q-badge>
+              </div>
+            </div>
+          </q-card-section>
+
+          <q-card-actions>
+          <a class="icon-link" href="https://github.com/programzheng/go-ptt-crawler">
+            <q-icon name="ion-logo-github" size="md"></q-icon>
+          </a>
+          <a class="icon-link" target="_blank" href="https://9hbg24cbkj.execute-api.us-east-1.amazonaws.com/ptt/image/Notebook/random">
+            <q-icon name="laptop" size="md">
+              <q-tooltip>
+                隨機取得ptt Notebook版的文章圖片
+              </q-tooltip>
+            </q-icon>
+          </a>
+          <a class="icon-link" target="_blank" href="https://9hbg24cbkj.execute-api.us-east-1.amazonaws.com/ptt/image/Soft_Job/random">
+            <q-icon name="work" size="md">
+              <q-tooltip>
+                隨機取得ptt Soft_Job版的文章圖片
+              </q-tooltip>
+            </q-icon>
+          </a>
+
+            <q-space />
+
+          </q-card-actions>
+        </q-card>
+      </div>
+      <div class="col-4">
+        <div>
+          <div class="text-overline text-green-9">Summary</div>
+          <div class="text-h5 q-mt-sm q-mb-xs text-bold">PTT自定義看板取得文章內文圖片</div>
+          <div class="text-body1">
+            藉由把PTT看板名稱帶到網址上的parameter，取得指定看板內隨機文章內的隨機一張圖片或是取得指定看板一定數量的文章內的所有圖片轉為JSON檔案。運用無服務器架構，部署於AWS的Lambda。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row items-center justify-around portfolio">
+      <div class="col-5">
+        <q-card flat bordered>
+          <!-- <q-img
+            src="https://cdn.quasar.dev/img/parallax2.jpg"
+          /> -->
+
+          <q-card-section class="q-pb-none">
+            <div class="text-overline text-blue-6">Golang</div>
             <div class="text-h5 text-bold q-mt-sm q-mb-xs">base</div>
             <div class="row q-mt-sm items-start justify-start">
               <div class="q-pr-xs">
@@ -100,50 +157,59 @@
 
           <q-card-section class="q-pb-none">
             <div class="text-overline text-blue-6">Golang</div>
-            <div class="text-h5 text-bold q-mt-sm q-mb-xs">go-ptt-crawler</div>
+            <div class="text-h5 text-bold q-mt-sm q-mb-xs">games</div>
             <div class="row q-mt-sm items-start justify-start">
               <div class="q-pr-xs">
-                <q-badge color="grey-14">Gin</q-badge>
+                <q-badge color="grey-14">GRPC</q-badge>
               </div>
               <div class="q-pr-xs">
-                <q-badge color="grey-14">Colly</q-badge>
+                <q-badge color="grey-14">Gorm</q-badge>
               </div>
               <div class="q-pr-xs">
-                <q-badge color="grey-14">AWS Lambda</q-badge>
+                <q-badge color="grey-14">ＭySQL</q-badge>
+              </div>
+              <div class="q-pr-xs">
+                <q-badge color="grey-14">Docker</q-badge>
+              </div>
+              <div class="q-pr-xs">
+                <q-badge color="grey-14">GCP Compute Engine</q-badge>
               </div>
             </div>
           </q-card-section>
 
           <q-card-actions>
-          <a class="icon-link" href="https://github.com/programzheng/go-ptt-crawler">
-            <q-icon name="ion-logo-github" size="md"></q-icon>
-          </a>
-          <a class="icon-link" target="_blank" href="https://9hbg24cbkj.execute-api.us-east-1.amazonaws.com/ptt/image/Notebook/random">
-            <q-icon name="laptop" size="md">
-              <q-tooltip>
-                隨機取得ptt Notebook版的文章圖片
-              </q-tooltip>
-            </q-icon>
-          </a>
-          <a class="icon-link" target="_blank" href="https://9hbg24cbkj.execute-api.us-east-1.amazonaws.com/ptt/image/Soft_Job/random">
-            <q-icon name="work" size="md">
-              <q-tooltip>
-                隨機取得ptt Soft_Job版的文章圖片
-              </q-tooltip>
-            </q-icon>
-          </a>
+            <a class="icon-link" href="https://github.com/programzheng/games">
+              <q-icon name="ion-logo-github" size="md"></q-icon>
+            </a>
 
             <q-space />
 
+            <!-- <q-btn
+              color="grey"
+              round
+              flat
+              dense
+              :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+              @click="expanded = !expanded"
+            /> -->
           </q-card-actions>
+
+          <!-- <q-slide-transition>
+            <div v-show="expanded">
+              <q-separator />
+              <q-card-section class="text-subitle2">
+                {{ lorem }}
+              </q-card-section>
+            </div>
+          </q-slide-transition> -->
         </q-card>
       </div>
       <div class="col-4">
         <div>
           <div class="text-overline text-green-9">Summary</div>
-          <div class="text-h5 q-mt-sm q-mb-xs text-bold">PTT自定義看板取得文章內文圖片</div>
+          <div class="text-h5 q-mt-sm q-mb-xs text-bold">微服務-遊戲</div>
           <div class="text-body1">
-            藉由把PTT看板名稱帶到網址上的parameter，取得指定看板內隨機文章內的隨機一張圖片或是取得指定看板一定數量的文章內的所有圖片轉為JSON檔案。運用無服務器架構，部署於AWS的Lambda。
+            此專案用途用於實現高流量遊戲、抽獎的實作，讓其它微服務可以藉由GRPC進行調用並將遊戲等資料統合在此專案上。部署於GCP的Compute Engine。
           </div>
         </div>
       </div>
