@@ -267,6 +267,11 @@
           <div class="text-body1">
             可於管理介面新增自己所需要的中英文對照文字並提供API給其他微服務使用，讓其他微服務可用於更換語系。部署於GCP的Compute Engine。
           </div>
+          <div class="text-caption q-mt-sm">
+            訪客帳號密碼：<br/>
+            Account: guest<br/>
+            Password: guest
+          </div>
         </div>
       </div>
     </div>
