@@ -87,7 +87,7 @@
                 <q-badge color="grey-14">Gin</q-badge>
               </div>
               <div class="q-pr-xs">
-                <q-badge color="grey-14">GRPC</q-badge>
+                <q-badge color="grey-14">gRPC</q-badge>
               </div>
               <div class="q-pr-xs">
                 <q-badge color="grey-14">Gorm</q-badge>
@@ -143,7 +143,7 @@
           <div class="text-overline text-green-9">Summary</div>
           <div class="text-h5 q-mt-sm q-mb-xs text-bold">微服務基礎底層</div>
           <div class="text-body1">
-            設計作為微服務架構內基礎功能的實現，並利用HTTP API與GRPC與其他微服務做溝通。部署於GCP的Compute Engine。
+            設計作為微服務架構內基礎功能的實現，並利用HTTP API與gRPC與其他微服務做溝通。部署於GCP的Compute Engine。
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@
             <div class="text-h5 text-bold q-mt-sm q-mb-xs">games</div>
             <div class="row q-mt-sm items-start justify-start">
               <div class="q-pr-xs">
-                <q-badge color="grey-14">GRPC</q-badge>
+                <q-badge color="grey-14">gRPC</q-badge>
               </div>
               <div class="q-pr-xs">
                 <q-badge color="grey-14">ＭySQL</q-badge>
@@ -206,7 +206,7 @@
           <div class="text-overline text-green-9">Summary</div>
           <div class="text-h5 q-mt-sm q-mb-xs text-bold">微服務-遊戲</div>
           <div class="text-body1">
-            此專案用途用於實現高流量遊戲、抽獎的實作，讓其它微服務可以藉由GRPC進行調用並將遊戲等資料統合在此專案上。部署於GCP的Compute Engine。
+            此專案用途用於實現高流量遊戲、抽獎的實作，讓其它微服務可以藉由gRPC進行調用並將遊戲等資料統合在此專案上。部署於GCP的Compute Engine。
           </div>
         </div>
       </div>
