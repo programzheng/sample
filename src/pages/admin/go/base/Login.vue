@@ -13,7 +13,7 @@
           <q-input
             filled
             v-model="account"
-            type="email"
+            type="text"
             label="帳號"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '不可以留空']"
