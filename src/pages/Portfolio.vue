@@ -145,6 +145,11 @@
           <div class="text-body1">
             設計作為微服務架構內基礎功能的實現，並利用HTTP API與gRPC與其他微服務做溝通。部署於GCP的Compute Engine。
           </div>
+          <div class="text-caption q-mt-sm">
+            管理介面訪客帳號密碼：<br/>
+            Account: guest<br/>
+            Password: guest
+          </div>
         </div>
       </div>
     </div>
