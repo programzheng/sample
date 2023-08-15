@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  quasar-dev:
+    build:
+      context: .
+      target: 'develop-stage'
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+    command: /bin/sh -c "yarn && quasar dev"
+    networks:
+      - frontend
+
+  quasar-prod:
+    build:
+      context: .
+      target: 'production-stage'
+    restart: always
+    ports:
+      - '3000:80'
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    external: true
