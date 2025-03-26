@@ -55,7 +55,7 @@ export default {
 			userProfile.value = userProfileReponse.data as UserProfile
 		});
 	
-		const socket: Socket = io(process.env.NODE_MESSAGING_SOCKET as string, {
+		const socket: Socket = io(window.location.origin, {
 			extraHeaders: {
 				Authorization: `Bearer ${userToken as string}`
 			}
@@ -64,9 +64,11 @@ export default {
 			results: [] as Message[]
 		})
 
-		const currentSocketId = ref('')
+		const currentSocketId = ref<string>('')
 		socket.on('connect', () => {
-			currentSocketId.value = socket.id
+			if (socket.id) {
+				currentSocketId.value = socket.id
+			}
 		})
 
 		socket.on('message', (data:Message[]) => {

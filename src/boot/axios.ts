@@ -22,7 +22,7 @@ interface ApiErrorResponseData{
  */
 const goBaseAdminApiUserTokenKey = 'go_base_admin_token'
 const goBaseAdminApi = axios.create({
-  baseURL: process.env.GO_BASE_API,
+  baseURL: window.location.origin,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -72,7 +72,7 @@ goBaseAdminApi.interceptors.response.use((response) => {
  */
 const goLanguageRepositoryUserTokenKey = 'go_language_repository_user_token'
 const goLanguageRepositoryApi = axios.create({
-  baseURL: process.env.GO_LANGUAGE_REPOSITORY_API,
+  baseURL: window.location.origin,  // 替代 process.env.GO_LANGUAGE_REPOSITORY_API
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -122,7 +122,7 @@ goLanguageRepositoryApi.interceptors.response.use((response) => {
  */
 const nodeMessagingSocketApiUserTokenKey = 'node_messaging_socket_user_token';
 const nodeMessagingSocketApi = axios.create({
-  baseURL: process.env.NODE_MESSAGING_SOCKET_API,
+  baseURL: window.location.origin,  // 替代 process.env.NODE_MESSAGING_SOCKET_API
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'

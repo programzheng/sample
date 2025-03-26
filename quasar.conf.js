@@ -79,11 +79,12 @@ module.exports = configure(function (ctx) {
       chainWebpack (/* chain */) {
         //
       },
-      env: (() => {
-        const env = Object.assign(process.env, require('dotenv').config().parsed)
-        console.log(env)
-        return env
-      })()
+      env: {
+        GO_BASE_API: process.env.GO_BASE_API || 'http://localhost:8080',
+        GO_LANGUAGE_REPOSITORY_API: process.env.GO_LANGUAGE_REPOSITORY_API || 'http://localhost:8081',
+        NODE_MESSAGING_SOCKET_API: process.env.NODE_MESSAGING_SOCKET_API || 'http://localhost:8082',
+        NODE_MESSAGING_SOCKET: process.env.NODE_MESSAGING_SOCKET || 'http://localhost:8083'
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer

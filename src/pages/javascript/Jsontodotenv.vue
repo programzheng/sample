@@ -65,13 +65,22 @@ export default {
         return deRef.value
       },
       set:(val) => {
-        let result = '{'
-        const data = val.split('=')
-        data.reduce((previousValue, currentValue) => {
-          return result += `"${previousValue}":"${currentValue}"`
-        })
-        result += '}'
-        jsonRef.value = formatJson(result)
+        const result: Record<string, string> = {}
+        const lines = val.split('\n')
+
+        for (const line of lines) {
+          if (line.trim() === '' || !line.includes('=')) continue
+
+          const firstEqualIndex = line.indexOf('=')
+          const key = line.substring(0, firstEqualIndex).trim()
+          const value = line.substring(firstEqualIndex + 1).trim()
+
+          if (key) {
+            result[key] = value
+          }
+        }
+
+        jsonRef.value = formatJson(JSON.stringify(result))
         return deRef.value = val
       }
     })
