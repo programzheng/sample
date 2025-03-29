@@ -7,6 +7,9 @@ import Index from 'pages/Index.vue'
 import JavascriptTimestamp from 'pages/javascript/Timestamp.vue'
 import JavascriptDate from 'pages/javascript/Date.vue'
 import JavascriptJsontodotenv from 'pages/javascript/Jsontodotenv.vue'
+import JavascriptJwtIndex from 'pages/javascript/jwt/Index.vue'
+import JavascriptJwtGenerator from 'pages/javascript/jwt/Generator.vue'
+import JavascriptJwtVerifier from 'pages/javascript/jwt/Verifier.vue'
 import Portfolio from 'pages/Portfolio.vue'
 
 //go-base
@@ -67,6 +70,21 @@ const routes: RouteRecordRaw[] = [
         path: 'javascript/jsontodotenv',
         name: 'javascript.jsontodotenv',
         component: JavascriptJsontodotenv
+      },
+      {
+        path: 'javascript/jwt',
+        name: 'javascript.jwt',
+        component: JavascriptJwtIndex
+      },
+      {
+        path: 'javascript/jwt/generator',
+        name: 'javascript.jwt.generator',
+        component: JavascriptJwtGenerator
+      },
+      {
+        path: 'javascript/jwt/verifier',
+        name: 'javascript.jwt.verifier',
+        component: JavascriptJwtVerifier
       },
       {
         path: 'go/language-repository/login',

@@ -86,6 +86,12 @@ const linksList = [
         caption: 'jsontodotenv',
         icon: 'autorenew',
         link: '/javascript/jsontodotenv'
+      },
+      {
+        title: 'jwt',
+        caption: 'JWT產生與驗證',
+        icon: 'vpn_key',
+        link: '/javascript/jwt'
       }
     ]
   },
